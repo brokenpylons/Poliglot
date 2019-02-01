@@ -1,6 +1,19 @@
 import React, { Component } from 'react';
-import CodeMirror from './CodeMirror';
-import './codeMirrorFlex.css'
+import CodeMirror from './codeMirror';
+import injectSheet from 'react-jss';
+
+const style = {
+  '@global': {
+    '.CodeMirror': {
+        position: 'absolute'
+    }
+  },
+  editor: {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+  }
+}
 
 class TextEditor extends Component {
 
@@ -22,12 +35,11 @@ class TextEditor extends Component {
   }
 
   render() {
+    const { classes } = this.props;
     return (
-      <div style={{display: 'flex', flex: '1 1 0'}}>
-        <div ref={this.editor} style={{position: 'relative', flex: '1 1 0'}} />
-      </div>
+        <div className={classes.editor} ref={this.editor} />
     );
   }
 }
 
-export default TextEditor;
+export default injectSheet(style)(TextEditor);

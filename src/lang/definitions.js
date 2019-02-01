@@ -1,5 +1,5 @@
+import './theme.js'
 export {default as blocks} from './blocks.js'
-export {default} from './theme.js'
 
 export const toolbox = `<xml>
     <block type="Program"></block>
