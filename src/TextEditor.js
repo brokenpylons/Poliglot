@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import CodeMirror from './codeMirror';
 import injectSheet from 'react-jss';
+import parser from './lang/parser';
+import PrettyPrinter from './lang/prettyprinter';
 
 const style = {
   '@global': {
@@ -20,6 +22,9 @@ class TextEditor extends Component {
   constructor(props) {
     super(props);
     this.editor = React.createRef();
+    this.state = {
+      editor: null
+    }
   }
 
   componentDidMount() {
@@ -32,10 +37,29 @@ class TextEditor extends Component {
       theme: 'custom',
     });
     editor.setSize("100%", "100%");
+
+    editor.on("change", () => {
+      if (this.props.state.mode === 1) {
+        try {
+          this.props.state.ast = parser.parse(editor.getValue());
+        } catch {}
+      }
+    });
+    this.setState({editor: editor});
   }
 
   render() {
     const { classes } = this.props;
+    
+    if (this.props.state.mode === 2) {
+      if (this.state.editor != null && this.props.state.ast != null) {
+        const pp = new PrettyPrinter();
+        try {
+          this.state.editor.setValue(pp.print(this.props.state.ast));
+        } catch {}
+      }
+    }
+
     return (
         <div className={classes.editor} ref={this.editor} />
     );
