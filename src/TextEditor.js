@@ -52,15 +52,14 @@ class TextEditor extends Component {
   render() {
     const { classes } = this.props;
     
-    if (this.props.state.lastUpdater !== 2) {
-      if (this.state.editor != null && this.props.state.ast != null) {
-        this.state.editor.off('change', this.state.handler);
-        const pp = new PrettyPrinter();
-        try {
-          this.state.editor.setValue(pp.print(this.props.state.ast));
-        } catch {}
-        this.state.editor.on('change', this.state.handler);
-      }
+    if (this.props.state.lastUpdater !== 2 && this.state.editor != null &&
+        this.props.state.ast != null) {
+      this.state.editor.off('change', this.state.handler);
+      const pp = new PrettyPrinter();
+      try {
+        this.state.editor.setValue(pp.print(this.props.state.ast));
+      } catch {}
+      this.state.editor.on('change', this.state.handler);
     }
 
     return (

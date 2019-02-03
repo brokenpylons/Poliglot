@@ -28,7 +28,7 @@ class BlocklyEditor extends Component {
       if (event.type === Blockly.Events.BLOCK_CREATE || 
         event.type === Blockly.Events.BLOCK_CHANGE ||
         event.type === Blockly.Events.BLOCK_DELETE ||
-        event.type === Blockly.Events.BLOCK_MOVE) { // && event.newParentId != null)) {
+        event.type === Blockly.Events.BLOCK_MOVE) { 
         try {
           this.props.updateState({lastUpdater: 1, ast: save(workspace)});
         } catch {}
