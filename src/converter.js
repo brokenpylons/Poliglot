@@ -50,6 +50,7 @@ function isList(ast) {
 function load(workspace, ast) {
   function generate(ast) {
     let [c, ...astArgs] = ast;
+
     const block = workspace.newBlock(c);
     const blockArgs = getBlockArguments(block);
     block.initSvg();
@@ -78,12 +79,14 @@ function load(workspace, ast) {
     return block;
   }
 
-  console.log("S" + ast);
   if (ast == null) {
     return null;
   }
-
-  return ast.map(generate);
+  
+  workspace.setResizesEnabled(false);
+  const blocks = ast.map(generate);
+  workspace.setResizesEnabled(true);
+  return blocks;
 }	
 
 function save(workspace) {
@@ -114,7 +117,7 @@ function save(workspace) {
     });
     return [block.type, ...astArgs];
   }
-  return workspace.getTopBlocks(true).map(generate)
+  return workspace.getTopBlocks(true).map(generate);
 }
 
 function formatBlocks(blocks, padding = 2) {

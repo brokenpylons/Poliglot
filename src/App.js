@@ -16,11 +16,11 @@ class App extends Component {
   render() {
     return (
       <div style={{display: 'flex', flexDirection: 'column', height:'100vh'}}>
-        <State render={state => (
+        <State render={(state, updateState) => (
           <SplitView> 
             <SplitView direction='column'>
-              <BlocklyEditor state={state} blocks={blocks} toolbox={toolbox} />
-              <TextEditor state={state} mode={mode} />
+              <BlocklyEditor state={state} updateState={updateState} blocks={blocks} toolbox={toolbox} />
+              <TextEditor state={state} updateState={updateState} mode={mode} />
             </SplitView>
             <SplitView direction='column'> 
               <p>

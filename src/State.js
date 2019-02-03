@@ -6,21 +6,18 @@ class State extends Component {
 
     this.state = {
       ast: null,
-      mode: 2
+      lastUpdater: null,
+      mode: 1
     }
+  }
 
-    this.handler = {
-      set: (obj, prop, value) => {
-        this.setState({[prop]: value});
-        return true;
-      }
-    };
+  updateState = obj => {
+    this.setState(obj);
   }
 
   render() {
-    this.proxy = new Proxy(this.state, this.handler);
     return (
-      <React.Fragment>{this.props.render(this.proxy)}</React.Fragment>
+      <React.Fragment>{this.props.render(this.state, this.updateState)}</React.Fragment>
     );
   }
 }

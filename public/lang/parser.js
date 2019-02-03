@@ -116,14 +116,20 @@ break;
 case 12:
  this.$ = ['String', $$[$0].replace(/^"(.*)"$/, '\u00241')] 
 break;
-case 13: case 17:
- this.$ = ['Lt', $$[$0-2], $$[$0]] 
+case 13:
+ this.$ = ['And', $$[$0-2], $$[$0]] 
 break;
-case 14: case 18:
- this.$ = ['Gt', $$[$0-2], $$[$0]] 
+case 14:
+ this.$ = ['Or', $$[$0-2], $$[$0]] 
 break;
 case 15:
- this.$ = ['Eq', $$[$0]] 
+ this.$ = ['Not', $$[$0]] 
+break;
+case 17:
+ this.$ = ['Lt', $$[$0-2], $$[$0]] 
+break;
+case 18:
+ this.$ = ['Gt', $$[$0-2], $$[$0]] 
 break;
 case 19:
  this.$ = ['Eq', $$[$0-2], $$[$0]] 

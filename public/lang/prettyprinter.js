@@ -129,11 +129,11 @@ function PrettyPrinter() {
   function expr(ast) {
     let [command, ...args] = ast;
     switch (command) {
-      case 'Lt':
+      case 'And':
         return expr_1(...args);
-      case 'Gt':
+      case 'Or':
         return expr_2(...args);
-      case 'Eq':
+      case 'Not':
         return expr_3(...args);
       case 'Lt':
       case 'Gt':

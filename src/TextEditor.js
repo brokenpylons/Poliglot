@@ -23,7 +23,8 @@ class TextEditor extends Component {
     super(props);
     this.editor = React.createRef();
     this.state = {
-      editor: null
+      editor: null,
+      handler: null
     }
   }
 
@@ -38,25 +39,27 @@ class TextEditor extends Component {
     });
     editor.setSize("100%", "100%");
 
-    editor.on("change", () => {
-      if (this.props.state.mode === 1) {
-        try {
-          this.props.state.ast = parser.parse(editor.getValue());
-        } catch {}
-      }
-    });
-    this.setState({editor: editor});
+    const handler = () => {
+      try {
+        this.props.updateState({lastUpdater: 2, ast: parser.parse(editor.getValue())});
+      } catch {}
+    };
+
+    editor.on("change", handler);
+    this.setState({editor: editor, handler: handler});
   }
 
   render() {
     const { classes } = this.props;
     
-    if (this.props.state.mode === 2) {
+    if (this.props.state.lastUpdater !== 2) {
       if (this.state.editor != null && this.props.state.ast != null) {
+        this.state.editor.off('change', this.state.handler);
         const pp = new PrettyPrinter();
         try {
           this.state.editor.setValue(pp.print(this.props.state.ast));
         } catch {}
+        this.state.editor.on('change', this.state.handler);
       }
     }
 

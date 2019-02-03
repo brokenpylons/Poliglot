@@ -28,7 +28,7 @@ export const toolbox = `<xml>
 export const mode = {
   start: [
     {regex: /program\b/, token: "program"},
-    {regex: /(?:if|while)\b/, token: "control"},
+    {regex: /(?:if|while|and|or|not)\b/, token: "control"},
     {regex: /(?:print|input)\b/, token: "io"},
     {regex: /"(?:[^\\]|\\.)*?(?:"|$)/, token: "io"},
     {regex: /[{(]/, indent: true},
