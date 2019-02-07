@@ -8,7 +8,8 @@ const style = {
     height: '100%'
   },
   child: {
-    flex: '1 1 0'
+    flex: '1 1 0',
+    position: 'relative'
   }
 };
 

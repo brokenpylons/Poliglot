@@ -10,7 +10,7 @@ const style = {
         position: 'absolute'
     }
   },
-  editor: {
+  container: {
     position: 'relative',
     width: '100%',
     height: '100%',
@@ -21,55 +21,51 @@ class TextEditor extends Component {
 
   constructor(props) {
     super(props);
-    this.editor = React.createRef();
-    this.state = {
-      editor: null,
-      handler: null
+    this.container = React.createRef();
+    this.editor = null;
+    this.prettyPrinter = new PrettyPrinter();
+  }
+
+  editorChange = () => {
+    const {sharedState} = this.props;
+    try {
+      sharedState.clearMessages();
+      sharedState.removeEventListener('ast', this.astChange);
+      sharedState.updateAst(parser.parse(this.editor.getValue()));
+      sharedState.addEventListener('ast', this.astChange);
+    } catch(e) {
+      if (e instanceof ParseError) {
+        sharedState.addMessage('error', e.message);
+      } else {
+        throw e;
+      }
     }
+  }
+
+  astChange = (ast) => {
+    this.editor.off('change', this.editorChange);
+    this.editor.setValue(this.prettyPrinter.print(ast));
+    this.editor.on('change', this.editorChange);
   }
 
   componentDidMount() {
     CodeMirror.defineSimpleMode('custom', this.props.mode);
-    const editor = CodeMirror(this.editor.current, {
+    this.editor = CodeMirror(this.container.current, {
       lineNumbers: true,
       indentUnit: 4,
       indentWithTabs: true,
       mode: 'custom',
       theme: 'custom',
     });
-    editor.setSize("100%", "100%");
-
-    const handler = () => {
-      try {
-        this.props.updateState({lastUpdater: 2, ast: parser.parse(editor.getValue())});
-      } catch(e) {
-        if (e instanceof ParseError) {
-          this.props.updateState({errors: e.message})
-        } else {
-          throw e;
-        }
-      }
-    };
-
-    editor.on("change", handler);
-    this.setState({editor: editor, handler: handler});
+    this.editor.setSize('100%', '100%');
+    this.editor.on("change", this.editorChange);
+    this.props.sharedState.addEventListener('ast', this.astChange);
   }
 
   render() {
     const { classes } = this.props;
-    
-    if (this.props.state.lastUpdater !== 2 && this.state.editor != null &&
-        this.props.state.ast != null) {
-      this.state.editor.off('change', this.state.handler);
-      const pp = new PrettyPrinter();
-      try {
-        this.state.editor.setValue(pp.print(this.props.state.ast));
-      } catch {}
-      this.state.editor.on('change', this.state.handler);
-    }
-
     return (
-        <div className={classes.editor} ref={this.editor} />
+        <div className={classes.container} ref={this.container} />
     );
   }
 }

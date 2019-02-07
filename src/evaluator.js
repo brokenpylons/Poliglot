@@ -2,7 +2,6 @@ import {isValue, isCommand, isList} from './ast';
 
 function descent(ctx, ast, previous) {
   const [c, ...args] = ast;
-  console.log(c);
   return table[c](ctx, args, previous);
 }
 

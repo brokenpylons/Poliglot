@@ -3,32 +3,41 @@ import TextEditor from './TextEditor.js'
 import BlocklyEditor from './BlocklyEditor'
 import SplitView from './SplitView';
 import Console from './Console';
-import State from './State';
+import SharedState from './SharedState';
 import {blocks, toolbox, mode} from './lang/definitions.js'
 
-        /*<div>Ime<input type="" name="" /></div>
+/*
+ *
+    return (
+      <div>
+        <div>Ime<input type="" name="" /></div>
         <div>Id<input type="" name="" /></div>
-        <button>Login</button>*/
-
-          // <BlocklyEditor state={state} updateState={updateState} blocks={blocks} toolbox={toolbox} />
+        <button>Login</button>
+      </div>
+    );
+    */
 
 class App extends Component {
   render() {
     return (
       <div style={{display: 'flex', flexDirection: 'column', height:'100vh'}}>
-        <State render={(state, updateState) => (
-          <SplitView> 
-            <SplitView direction='column'>
-              <TextEditor state={state} updateState={updateState} mode={mode} />
-            </SplitView>
-            <SplitView direction='column'> 
+        <SharedState name='test' render={(sharedState) => (
+          <SplitView direction='column'>
+            <p>
+            This is da header bla blo [Booklet][Training][Test]
+            </p>
+            <SplitView direction='row'> 
               <p>
                 Naloga 1: Izračunaj 1 + 1
                 Bloa <br/ >
                 dsad  <br />
                 asd
               </p>
-              <Console state={state} updateState={updateState} />
+              <Console sharedState={sharedState} />
+            </SplitView>
+            <SplitView> 
+              <BlocklyEditor sharedState={sharedState} blocks={blocks} toolbox={toolbox} />
+              <TextEditor sharedState={sharedState} mode={mode} />
             </SplitView>
           </SplitView>
           )} />
