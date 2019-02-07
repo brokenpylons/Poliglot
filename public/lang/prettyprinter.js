@@ -99,12 +99,17 @@ function PrettyPrinter() {
   function printable(ast) {
     let [command, ...args] = ast;
     switch (command) {
+      case 'Concat':
+        return printable_1(...args);
+      case 'And':
+      case 'Or':
+      case 'Not':
       case 'Lt':
       case 'Gt':
       case 'Eq':
-      case 'Lt':
-      case 'Gt':
-      case 'Eq':
+      case 'Leq':
+      case 'Geq':
+      case 'Neq':
       case 'Plus':
       case 'Minus':
       case 'Times':
@@ -112,18 +117,57 @@ function PrettyPrinter() {
       case 'Number':
       case 'Id':
       case 'Input':
-        return printable_1(ast);
       case 'String':
-        return printable_2(...args);
+      case 'Line':
+        return printable_2(ast);
     }
   }
 
-  function printable_1(ast) {
+  function printable_1(arg1, arg2) {
+    return append(printable1(arg1), space(), printable(arg2));
+  }
+
+  function printable_2(ast) {
+    return printable1(ast);
+  }
+
+  function printable1(ast) {
+    let [command, ...args] = ast;
+    switch (command) {
+      case 'And':
+      case 'Or':
+      case 'Not':
+      case 'Lt':
+      case 'Gt':
+      case 'Eq':
+      case 'Leq':
+      case 'Geq':
+      case 'Neq':
+      case 'Plus':
+      case 'Minus':
+      case 'Times':
+      case 'Divides':
+      case 'Number':
+      case 'Id':
+      case 'Input':
+        return printable1_1(ast);
+      case 'String':
+        return printable1_2(...args);
+      case 'Line':
+        return printable1_3(...args);
+    }
+  }
+
+  function printable1_1(ast) {
     return expr(ast);
   }
 
-  function printable_2(arg1) {
+  function printable1_2(arg1) {
     return append(text('"'), text(arg1), text('"'));
+  }
+
+  function printable1_3() {
+    return text('line');
   }
 
   function expr(ast) {
@@ -138,6 +182,9 @@ function PrettyPrinter() {
       case 'Lt':
       case 'Gt':
       case 'Eq':
+      case 'Leq':
+      case 'Geq':
+      case 'Neq':
       case 'Plus':
       case 'Minus':
       case 'Times':
@@ -174,6 +221,12 @@ function PrettyPrinter() {
         return expr1_2(...args);
       case 'Eq':
         return expr1_3(...args);
+      case 'Leq':
+        return expr1_4(...args);
+      case 'Geq':
+        return expr1_5(...args);
+      case 'Neq':
+        return expr1_6(...args);
       case 'Plus':
       case 'Minus':
       case 'Times':
@@ -181,10 +234,10 @@ function PrettyPrinter() {
       case 'Number':
       case 'Id':
       case 'Input':
-      case 'Lt':
-      case 'Gt':
-      case 'Eq':
-        return expr1_4(ast);
+      case 'And':
+      case 'Or':
+      case 'Not':
+        return expr1_7(ast);
     }
   }
 
@@ -200,7 +253,19 @@ function PrettyPrinter() {
     return append(expr1(arg1), space(), text('='), space(), expr2(arg2));
   }
 
-  function expr1_4(ast) {
+  function expr1_4(arg1, arg2) {
+    return append(expr1(arg1), space(), text('>='), space(), expr2(arg2));
+  }
+
+  function expr1_5(arg1, arg2) {
+    return append(expr1(arg1), space(), text('<='), space(), expr2(arg2));
+  }
+
+  function expr1_6(arg1, arg2) {
+    return append(expr1(arg1), space(), text('/='), space(), expr2(arg2));
+  }
+
+  function expr1_7(ast) {
     return expr2(ast);
   }
 
@@ -216,12 +281,15 @@ function PrettyPrinter() {
       case 'Number':
       case 'Id':
       case 'Input':
+      case 'And':
+      case 'Or':
+      case 'Not':
       case 'Lt':
       case 'Gt':
       case 'Eq':
-      case 'Lt':
-      case 'Gt':
-      case 'Eq':
+      case 'Leq':
+      case 'Geq':
+      case 'Neq':
         return expr2_3(ast);
     }
   }
@@ -248,12 +316,15 @@ function PrettyPrinter() {
       case 'Number':
       case 'Id':
       case 'Input':
+      case 'And':
+      case 'Or':
+      case 'Not':
       case 'Lt':
       case 'Gt':
       case 'Eq':
-      case 'Lt':
-      case 'Gt':
-      case 'Eq':
+      case 'Leq':
+      case 'Geq':
+      case 'Neq':
       case 'Plus':
       case 'Minus':
         return expr3_3(ast);
@@ -281,12 +352,15 @@ function PrettyPrinter() {
         return expr4_2(...args);
       case 'Input':
         return expr4_3(...args);
+      case 'And':
+      case 'Or':
+      case 'Not':
       case 'Lt':
       case 'Gt':
       case 'Eq':
-      case 'Lt':
-      case 'Gt':
-      case 'Eq':
+      case 'Leq':
+      case 'Geq':
+      case 'Neq':
       case 'Plus':
       case 'Minus':
       case 'Times':

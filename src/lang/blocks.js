@@ -153,8 +153,33 @@ export default [
     "colour": colors.io
   },
   {
+    "type": "Concat",
+    "message0": "%1 %2",
+    "args0": [
+      {
+        "type": "input_value",
+        "check": ["String", "Number"],
+        "name": "0"
+      },
+      {
+        "type": "input_value",
+        "check": ["String", "Number"],
+        "name": "1"
+      }
+    ],
+    "inputsInline": true,
+    "output": "String",
+    "colour": colors.io
+  },
+  {
     "type": "Input",
     "message0": "input",
+    "output": "Number",
+    "colour": colors.io
+  },
+  {
+    "type": "Line",
+    "message0": "line",
     "output": "Number",
     "colour": colors.io
   },
@@ -287,6 +312,63 @@ export default [
   {
     "type": "Lt",
     "message0": "%1 > %2",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "0",
+        "check": "Number"
+      },
+      {
+        "type": "input_value",
+        "name": "1",
+        "check": "Number"
+      }
+    ],
+    "inputsInline": true,
+    "output": "Number",
+    "colour": colors.numbers
+  },
+  {
+    "type": "Leq",
+    "message0": "%1 \u2265 %2",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "0",
+        "check": "Number"
+      },
+      {
+        "type": "input_value",
+        "name": "1",
+        "check": "Number"
+      }
+    ],
+    "inputsInline": true,
+    "output": "Number",
+    "colour": colors.numbers
+  },
+  {
+    "type": "Geq",
+    "message0": "%1 \u2264 %2",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "0",
+        "check": "Number"
+      },
+      {
+        "type": "input_value",
+        "name": "1",
+        "check": "Number"
+      }
+    ],
+    "inputsInline": true,
+    "output": "Number",
+    "colour": colors.numbers
+  },
+  {
+    "type": "Neq",
+    "message0": "%1 \u2260 %2",
     "args0": [
       {
         "type": "input_value",

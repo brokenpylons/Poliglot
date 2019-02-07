@@ -10,7 +10,7 @@ import {blocks, toolbox, mode} from './lang/definitions.js'
         <div>Id<input type="" name="" /></div>
         <button>Login</button>*/
 
-          //
+          // <BlocklyEditor state={state} updateState={updateState} blocks={blocks} toolbox={toolbox} />
 
 class App extends Component {
   render() {
@@ -19,7 +19,6 @@ class App extends Component {
         <State render={(state, updateState) => (
           <SplitView> 
             <SplitView direction='column'>
-              <BlocklyEditor state={state} updateState={updateState} blocks={blocks} toolbox={toolbox} />
               <TextEditor state={state} updateState={updateState} mode={mode} />
             </SplitView>
             <SplitView direction='column'> 
@@ -29,7 +28,7 @@ class App extends Component {
                 dsad  <br />
                 asd
               </p>
-              <Console />
+              <Console state={state} updateState={updateState} />
             </SplitView>
           </SplitView>
           )} />

@@ -16,11 +16,17 @@ class BlocklyEditor extends Component {
     scrollbar.set((scrollbar.handlePosition_ / scrollbar.ratio_) + e.deltaY);
   }
 
+  getProgramBlocks() {
+    return this.state.workspace.getTopBlocks(true).filter(x => x.type === 'Program');
+  }
+
   componentDidMount() {
     Blockly.defineBlocksWithJsonArray(this.props.blocks);
     const workspace = Blockly.inject(this.editor.current, { 
         toolbox: this.props.toolbox,
-        trashcan: true
+        trashcan: true,
+        scrollbars: false,
+        collapse: true
     });
     workspace.scrollbar = new Blockly.Scrollbar(workspace, false);
 
@@ -30,7 +36,7 @@ class BlocklyEditor extends Component {
         event.type === Blockly.Events.BLOCK_DELETE ||
         event.type === Blockly.Events.BLOCK_MOVE) { 
         try {
-          this.props.updateState({lastUpdater: 1, ast: save(workspace)});
+          this.props.updateState({lastUpdater: 1, ast: save(this.getProgramBlocks())});
         } catch {}
       }
     });
@@ -40,7 +46,7 @@ class BlocklyEditor extends Component {
   render() {
     if (this.state.workspace != null && this.props.state.lastUpdater !== 1) {
       Blockly.Events.disable();
-      this.state.workspace.clear();
+      this.getProgramBlocks().forEach(x => x.dispose());
       const blocks = load(this.state.workspace, this.props.state.ast);
       if (blocks != null) {
         formatBlocks(blocks, 22);

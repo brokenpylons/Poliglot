@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CodeMirror from './codeMirror';
 import injectSheet from 'react-jss';
-import parser from './lang/parser';
+import parser, {ParseError} from './lang/parser';
 import PrettyPrinter from './lang/prettyprinter';
 
 const style = {
@@ -42,7 +42,13 @@ class TextEditor extends Component {
     const handler = () => {
       try {
         this.props.updateState({lastUpdater: 2, ast: parser.parse(editor.getValue())});
-      } catch {}
+      } catch(e) {
+        if (e instanceof ParseError) {
+          this.props.updateState({errors: e.message})
+        } else {
+          throw e;
+        }
+      }
     };
 
     editor.on("change", handler);

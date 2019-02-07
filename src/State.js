@@ -7,7 +7,7 @@ class State extends Component {
     this.state = {
       ast: null,
       lastUpdater: null,
-      mode: 1
+      errors: []
     }
   }
 

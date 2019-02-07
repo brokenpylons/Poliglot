@@ -89,10 +89,10 @@ function load(workspace, ast) {
   return blocks;
 }	
 
-function save(workspace) {
+function save(blocks) {
   function generate(block) {
     if (block == null) {
-      return null;
+      throw Error("XXX");
     }
 
     let astArgs = getBlockArguments(block).map(blockArg => {
@@ -117,7 +117,7 @@ function save(workspace) {
     });
     return [block.type, ...astArgs];
   }
-  return workspace.getTopBlocks(true).map(generate);
+  return blocks.map(generate);
 }
 
 function formatBlocks(blocks, padding = 2) {
