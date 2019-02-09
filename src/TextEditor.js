@@ -58,8 +58,17 @@ class TextEditor extends Component {
       theme: 'custom',
     });
     this.editor.setSize('100%', '100%');
+    const value = this.props.sharedStore.get(this.constructor.name);
+    if (value != null) {
+      this.editor.setValue(value);
+    }
+
     this.editor.on("change", this.editorChange);
     this.props.sharedState.addEventListener('ast', this.astChange);
+  }
+  
+  componentWillUnmount() {
+    this.props.sharedStore.set(this.constructor.name, this.editor.getValue());
   }
 
   render() {

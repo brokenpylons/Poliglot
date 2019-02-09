@@ -80,7 +80,7 @@ export const mode = {
     {regex: /"(?:[^\\]|\\.)*?(?:"|$)/, token: "string"},
     {regex: /[{(]/, indent: true},
     {regex: /[})]/, dedent: true},
-    {regex: /[a-zA-Z]+/, token: "variables"},
+    {regex: /[a-zA-Z]+[0-9]*/, token: "variables"},
     {regex: /[0-9]+/, token: "numbers"},
   ],
   meta: {

@@ -5,11 +5,11 @@ const style = {
   container: {
     display: 'flex',
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   child: {
     flex: '1 1 0',
-    position: 'relative'
+    position: 'relative',
   }
 };
 

@@ -38,8 +38,17 @@ class Console extends Component {
   }
 
   componentDidMount() {
+    const messages = JSON.parse(this.props.sharedStore.get(`${this.constructor.name}messages`)) || [];
+    const output = this.props.sharedStore.get(`${this.constructor.name}output`) || '';
+    this.setState({messages, output});
+
     this.props.sharedState.addEventListener('messages', this.messagesChange);
     this.props.sharedState.addEventListener('ast', this.astChange);
+  }
+
+  componentWillUnmount() {
+    this.props.sharedStore.set(`${this.constructor.name}messages`, JSON.stringify(this.state.messages));
+    this.props.sharedStore.set(`${this.constructor.name}output`, this.state.output);
   }
 
   render() {

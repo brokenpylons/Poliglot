@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
 
-const listeners = Symbol('listeners'); 
-class Store {
-  constructor() {
+class State {
+  constructor(key) {
+    this.key = key;
     this.ast = null;
     this.messages = [];
-  }
-
-  get listeners() {
-    if (this[listeners] == null) {
-      this[listeners] = {}
-    }
-    return this[listeners];
+    this.listeners ={};
   }
 
   addMessage(type, message) {
@@ -45,7 +39,25 @@ class Store {
     if (!(event in this.listeners)) {
       return;
     }
-    this[listeners][event].forEach(x => x(...args));
+    this.listeners[event].forEach(x => x(...args));
+  }
+}
+
+class Store {
+  constructor(storeKey) {
+    this.storeKey = storeKey;
+  }
+
+  getCombinedKey(key) {
+    return `[${this.storeKey}$${key}]`
+  }
+
+  set(key, value) {
+    localStorage.setItem(this.getCombinedKey(key), value);
+  }
+
+  get(key) {
+    return localStorage.getItem(this.getCombinedKey(key));
   }
 }
 
@@ -53,22 +65,24 @@ class SharedState extends Component {
   constructor(props) {
     super(props);
 
-    this.store = new Store();
-    window.addEventListener('unload', () => {
-      localStorage.setItem(this.props.name, JSON.stringify(this.store.ast));
-    });
+    this.state = new State();
+    this.store = new Store(this.props.name);
   }
 
-  componentDidMount() {
-    const ast = JSON.parse(localStorage.getItem(this.props.name));
+  /*componentDidMount() {
+    const ast = JSON.parse(localStorage.getItem(this.constructor.name));
     if (ast !== null) {
       this.store.updateAst(ast);
     }
   }
 
+  componentWillUnmount() {
+      this.store.set(this.constructor.name, JSON.stringify(this.store.ast));
+  }*/
+
   render() {
     return (
-      <React.Fragment>{this.props.render(this.store)}</React.Fragment>
+      <React.Fragment>{this.props.render(this.state, this.store)}</React.Fragment>
     );
   }
 }

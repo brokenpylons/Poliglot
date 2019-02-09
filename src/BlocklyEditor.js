@@ -55,8 +55,21 @@ class BlocklyEditor extends Component {
         collapse: true
     });
     this.workspace.scrollbar = new Blockly.Scrollbar(this.workspace, false);
+    const xml = this.props.sharedStore.get(this.constructor.name);
+    if (xml != null) {
+      const dom = Blockly.Xml.textToDom(xml);
+      Blockly.Events.disable();
+      Blockly.Xml.domToWorkspace(dom, this.workspace);
+      Blockly.Events.enable();
+    }
     this.workspace.addChangeListener(this.workspaceChange);
     this.props.sharedState.addEventListener('ast', this.astChange);
+  }
+
+  componentWillUnmount() {
+    const dom = Blockly.Xml.workspaceToDom(this.workspace);
+    const xml = Blockly.Xml.domToText(dom);
+    this.props.sharedStore.set(this.constructor.name, xml);
   }
 
   render() {
