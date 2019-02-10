@@ -1,52 +1,54 @@
 import {isValue, isCommand, isList} from './ast';
 
-function descent(ctx, ast, previous) {
+class SemanticError extends Error {}
+
+async function descent(ctx, ast, previous) {
   const [c, ...args] = ast;
-  return table[c](ctx, args, previous);
+  return await table[c](ctx, args, previous);
 }
 
-function iterate(ctx, a) {
+async function iterate(ctx, a) {
   let previous;
   for (let x of a) {
-    previous = descent(ctx, x, previous);
+    previous = await descent(ctx, x, previous);
   }
 }
 
 function binaryOperator(fun) {
-  return (ctx, args) => {
+  return async (ctx, args) => {
     const [a, b] = args;
-    return fun(descent(ctx, a), descent(ctx, b));
+    return fun(await descent(ctx, a), await descent(ctx, b));
   }
 }
 
 function unaryOperator(fun) {
-  return (ctx, args) => {
+  return async (ctx, args) => {
     const [a] = args;
-    return fun(descent(ctx, a));
+    return fun(await descent(ctx, a));
   }
 }
 
 const next = Symbol('next');
 
 const table = {
-  Program: function(ctx, args) {
+  Program: async function(ctx, args) {
     const [stmts] = args;
     ctx.variables = {};
-    iterate(ctx, stmts);
+    await iterate(ctx, stmts);
   },
 
-  If: function(ctx, args) {
+  If: async function(ctx, args) {
     const [expr, stmts] = args;
-    if (descent(ctx, expr)) {
-      iterate(ctx, stmts);
+    if (await descent(ctx, expr)) {
+      await iterate(ctx, stmts);
       return {[next]: false};
     } 
     return {[next]: true};
   },
 
-  Elseif: function(ctx, args, previous) {
+  Elseif: async function(ctx, args, previous) {
     if (previous == null || previous[next] == null) {
-      throw new Error("Semantic error")
+      throw new SemanticError("Semantic error")
     }
 
     const [expr, stmts] = args;
@@ -54,16 +56,16 @@ const table = {
       return {[next]: false};
     }
 
-    if (descent(ctx, expr)) {
-      iterate(ctx, stmts);
+    if (await descent(ctx, expr)) {
+      await iterate(ctx, stmts);
       return {[next]: false};
     }
     return {[next]: true};
   },
 
-  Else: function(ctx, args, previous) {
+  Else: async function(ctx, args, previous) {
     if (previous == null || previous[next] == null) {
-      throw new Error("Semantic error")
+      throw new SemanticError("Semantic error")
     }
 
     if (!previous[next]) {
@@ -71,13 +73,13 @@ const table = {
     }
 
     const [stmts] = args;
-    iterate(ctx, stmts);
+    await iterate(ctx, stmts);
   },
 
-  While: function(ctx, args) {
+  While: async function(ctx, args) {
     const [expr, stmts] = args;
-    for (let i = 0; i < 100 && descent(ctx, expr); i++) {
-      iterate(ctx, stmts);
+    for (let i = 0; i < 100 && await descent(ctx, expr); i++) {
+      await iterate(ctx, stmts);
     }
   },
 
@@ -90,13 +92,17 @@ const table = {
       return string;
   },
 
-  Print: function(ctx, args) {
+  Print: async function(ctx, args) {
     const [expr] = args;
-    ctx.buffer.push(descent(ctx, expr));
+    ctx.print(await descent(ctx, expr));
   },
 
   Line: function(ctx) {
       return '\n';
+  },
+
+  Input: async function(ctx) {
+    return await ctx.input();
   },
 
   // TODO: input
@@ -108,9 +114,9 @@ const table = {
     return ctx.variables[id];
   },
 
-  Assignment: function(ctx, args) {
+  Assignment: async function(ctx, args) {
     const [id, expr] = args;
-    ctx.variables[id] = descent(ctx, expr);
+    ctx.variables[id] = await descent(ctx, expr);
   },
 
   Number: function(ctx, args) {
@@ -129,17 +135,18 @@ const table = {
   Leq: binaryOperator((a, b) => a >= b)
 }
 
-function evaluate(ast) {
-  const buffer = [];
+async function evaluate(ast, print, input) {
   try {
-    ast.forEach(x => descent({buffer: buffer}, x));
+    for (let node of ast) {
+      await descent({print, input}, node);
+    }
   } catch(e) {
-    if (e.message !== 'Semantic error') {
+    if (e instanceof SemanticError) {
+      print("ERROR");
+    } else {
       throw e;
     }
-    buffer.push("ERROR");
   }
-  return buffer.join('');
 }
 
 export {evaluate};

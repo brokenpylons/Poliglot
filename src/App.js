@@ -98,11 +98,11 @@ class Playground extends Component {
     const {classes} = this.props;
     return (
       <SharedState name='playground' render={(sharedState, sharedStore) => (
-        <SplitView direction='row'>
-          <SplitView direction='column'> 
+        <SplitView style={{}}> 
+          <SplitView style={{flexDirection: 'column'}}>
             <Console sharedState={sharedState} sharedStore={sharedStore} />
           </SplitView>
-          <SplitView direction='column'> 
+          <SplitView style={{flexDirection: 'column'}}>
             <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} blocks={blocks} toolbox={toolbox} />
             <TextEditor sharedState={sharedState} sharedStore={sharedStore} mode={mode} />
           </SplitView>
@@ -124,15 +124,17 @@ class Exam extends Component {
         </div>
         {tasks.map((task, i) => 
           <SharedState tabName={i + 1} name={task.title} render={(sharedState, sharedStore) => (
-            <SplitView direction='row'>
-              <SplitView direction='column'> 
-                <p>
+            <SplitView style={{}}> 
+              <SplitView style={{flexDirection: 'column'}}>
+                <div style={{position: 'absolute', width: '100%', height: '100%'}}>
+                  <div>
                   <h1>Naloga {i + 1}: {task.title}</h1>
                   {task.content}
-                </p>
+                  </div>
+                </div>
                 <Console sharedState={sharedState} sharedStore={sharedStore} />
               </SplitView>
-              <SplitView direction='column'> 
+              <SplitView style={{flexDirection: 'column'}}> 
                 <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} blocks={blocks} toolbox={toolbox} />
                 <TextEditor sharedState={sharedState} sharedStore={sharedStore} mode={mode} />
               </SplitView>

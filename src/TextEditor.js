@@ -3,18 +3,29 @@ import CodeMirror from './codeMirror';
 import injectSheet from 'react-jss';
 import parser, {ParseError} from './lang/parser';
 import PrettyPrinter from './lang/prettyprinter';
+import {light as colors} from './lang/colors';
 
 const style = {
   '@global': {
     '.CodeMirror': {
-        position: 'absolute'
+      position: 'absolute',
+    },
+    '.errors': {
+      width: 15,
     }
   },
   container: {
     position: 'relative',
     width: '100%',
     height: '100%',
-  }
+  },
+  error: {
+    borderBottom: '2px solid red'
+  },
+
+  errorLine: {
+    color: 'red'
+  },
 }
 
 class TextEditor extends Component {
@@ -24,18 +35,52 @@ class TextEditor extends Component {
     this.container = React.createRef();
     this.editor = null;
     this.prettyPrinter = new PrettyPrinter();
+    this.markers = [];
   }
 
   editorChange = () => {
     const {sharedState} = this.props;
     try {
+      this.editor.clearGutter('errors');
+      this.markers.forEach(x => x.clear());
+      this.markers = [];
+
       sharedState.clearMessages();
       sharedState.removeEventListener('ast', this.astChange);
       sharedState.updateAst(parser.parse(this.editor.getValue()));
       sharedState.addEventListener('ast', this.astChange);
     } catch(e) {
       if (e instanceof ParseError) {
-        sharedState.addMessage('error', e.message);
+
+        let symbol, message;
+        if (e.loc != null) {
+          const marker = this.editor.markText(
+            {line: e.loc.first_line - 1, ch: e.loc.first_column},
+            {line: e.loc.last_line - 1, ch: e.loc.last_column },
+            {className: this.props.classes.error});
+          this.markers.push(marker);
+          this.errorLine = e.loc.first_line - 1;
+          symbol = '\u2738';
+
+          const clean = (str) => '"' + str.replace(/[_']/g, '') + '"';
+          message = `dobil sem ${clean(e.token)}, pričakoval sem ${e.expected.map(clean).join(', ')}`;
+        } else {
+          this.errorLine = e.line;
+          symbol = '\u25B4';
+
+          message = 'neznani simbol'
+        }
+
+        const makeMarker = () => {
+          var marker = document.createElement("div");
+          marker.style.color = 'red';
+          marker.style.fontSize = '20px';
+          marker.style.lineHeight = '13px';
+          marker.innerHTML = symbol; 
+          marker.title = message;
+          return marker;
+        }
+        this.editor.setGutterMarker(this.errorLine, "errors", makeMarker());
       } else {
         throw e;
       }
@@ -56,8 +101,10 @@ class TextEditor extends Component {
       indentWithTabs: true,
       mode: 'custom',
       theme: 'custom',
+      gutters: ['CodeMirror-linenumbers', 'errors']
     });
     this.editor.setSize('100%', '100%');
+    this.editor.refresh();
     const value = this.props.sharedStore.get(this.constructor.name);
     if (value != null) {
       this.editor.setValue(value);

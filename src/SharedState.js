@@ -8,8 +8,8 @@ class State {
     this.listeners ={};
   }
 
-  addMessage(type, message) {
-    this.messages.push({type, message});
+  addMessage(message) {
+    this.messages.push(message);
     this.dispatchEvent('messages', this.messages);
   }
 
