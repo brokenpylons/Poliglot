@@ -4,7 +4,7 @@ import {evaluate} from './evaluator';
 import {light as colors} from './lang/colors';
 
 const style = {
-  console: { 
+  console: {
     position: 'absolute',
     overflow: 'auto',
     margin: 0,
@@ -66,7 +66,7 @@ class Console extends Component {
         return {output: prevState.output.concat([message])};
       });
     }
-    
+
     const input = async () => {
       return new Promise((resolve, reject) => {
         const onEnter = async event => {
@@ -102,17 +102,15 @@ class Console extends Component {
   }
 
   componentDidMount() {
-    const messages = JSON.parse(this.props.sharedStore.get(`${this.constructor.name}messages`)) || []; // TODO: Duplication of initial values
-    const output = this.props.sharedStore.get(`${this.constructor.name}output`) || [];
-    this.setState({messages, output});
+    const messages = JSON.parse(this.props.sharedStore.get('Console')) || this.state.messages;
+    this.setState({messages});
 
     this.props.sharedState.addEventListener('messages', this.messagesChange);
     this.props.sharedState.addEventListener('ast', this.astChange);
   }
 
   componentWillUnmount() {
-    this.props.sharedStore.set(`${this.constructor.name}messages`, JSON.stringify(this.state.messages));
-    this.props.sharedStore.set(`${this.constructor.name}output`, this.state.output);
+    this.props.sharedStore.set('Console', JSON.stringify(this.state.messages));
   }
 
   render() {
@@ -120,7 +118,7 @@ class Console extends Component {
     return (
       <pre className={classes.console}>
         <button onClick={this.onRun}>Run</button><br />
-        {this.state.messages.map((x, i) => 
+        {this.state.messages.map((x, i) =>
           <div key={i} className={classes[x.type]}>{x.message}</div>
         )}
         {this.state.output}

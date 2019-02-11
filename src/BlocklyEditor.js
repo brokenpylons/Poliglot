@@ -7,6 +7,8 @@ class BlocklyEditor extends Component {
     super(props);
     this.editor = React.createRef();
     this.workspace = null;
+
+    Blockly.defineBlocksWithJsonArray(this.props.blocks);
   }
 
   onWheel = (e) => {
@@ -19,10 +21,10 @@ class BlocklyEditor extends Component {
   }
 
   workspaceChange = event => {
-    if (event.type === Blockly.Events.BLOCK_CREATE || 
+    if (event.type === Blockly.Events.BLOCK_CREATE ||
       event.type === Blockly.Events.BLOCK_CHANGE ||
       event.type === Blockly.Events.BLOCK_DELETE ||
-      event.type === Blockly.Events.BLOCK_MOVE) { 
+      event.type === Blockly.Events.BLOCK_MOVE) {
 
       const {sharedState} = this.props;
       try {
@@ -47,15 +49,15 @@ class BlocklyEditor extends Component {
   }
 
   componentDidMount() {
-    Blockly.defineBlocksWithJsonArray(this.props.blocks);
-    this.workspace = Blockly.inject(this.editor.current, { 
+    this.workspace = Blockly.inject(this.editor.current, {
         toolbox: this.props.toolbox,
         trashcan: true,
         scrollbars: false,
         collapse: true
     });
     this.workspace.scrollbar = new Blockly.Scrollbar(this.workspace, false);
-    const xml = this.props.sharedStore.get(this.constructor.name);
+
+    const xml = this.props.sharedStore.get('BlocklyEditor');
     if (xml != null) {
       const dom = Blockly.Xml.textToDom(xml);
       Blockly.Events.disable();
@@ -69,7 +71,8 @@ class BlocklyEditor extends Component {
   componentWillUnmount() {
     const dom = Blockly.Xml.workspaceToDom(this.workspace);
     const xml = Blockly.Xml.domToText(dom);
-    this.props.sharedStore.set(this.constructor.name, xml);
+
+    this.props.sharedStore.set('BlocklyEditor', xml);
   }
 
   render() {

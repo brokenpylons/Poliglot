@@ -69,17 +69,6 @@ class SharedState extends Component {
     this.store = new Store(this.props.name);
   }
 
-  /*componentDidMount() {
-    const ast = JSON.parse(localStorage.getItem(this.constructor.name));
-    if (ast !== null) {
-      this.store.updateAst(ast);
-    }
-  }
-
-  componentWillUnmount() {
-      this.store.set(this.constructor.name, JSON.stringify(this.store.ast));
-  }*/
-
   render() {
     return (
       <React.Fragment>{this.props.render(this.state, this.store)}</React.Fragment>

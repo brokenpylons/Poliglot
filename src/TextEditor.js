@@ -76,7 +76,7 @@ class TextEditor extends Component {
           marker.style.color = 'red';
           marker.style.fontSize = '20px';
           marker.style.lineHeight = '13px';
-          marker.innerHTML = symbol; 
+          marker.innerHTML = symbol;
           marker.title = message;
           return marker;
         }
@@ -105,7 +105,7 @@ class TextEditor extends Component {
     });
     this.editor.setSize('100%', '100%');
     this.editor.refresh();
-    const value = this.props.sharedStore.get(this.constructor.name);
+    const value = this.props.sharedStore.get('TextEditor');
     if (value != null) {
       this.editor.setValue(value);
     }
@@ -113,9 +113,9 @@ class TextEditor extends Component {
     this.editor.on("change", this.editorChange);
     this.props.sharedState.addEventListener('ast', this.astChange);
   }
-  
+
   componentWillUnmount() {
-    this.props.sharedStore.set(this.constructor.name, this.editor.getValue());
+    this.props.sharedStore.set('TextEditor', this.editor.getValue());
   }
 
   render() {
