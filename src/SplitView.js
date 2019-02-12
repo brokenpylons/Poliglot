@@ -6,13 +6,12 @@ const style = {
     display: 'flex',
     width: '100%',
     height: '100%',
-    boxSizing: 'border-box'
   },
   child: {
     flex: '1 1 0',
     position: 'relative',
     outline: '1px solid gainsboro',
-    padding: '10px'
+    zIndex: 100
   }
 };
 

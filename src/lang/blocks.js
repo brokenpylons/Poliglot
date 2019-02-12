@@ -101,7 +101,7 @@ export default [
     "args0": [
       {
         "type": "field_variable",
-        "name": "0"
+        "name": "VAR"
       },
       {
         "type": "input_value",
@@ -119,7 +119,7 @@ export default [
     "args0": [
       {
         "type": "field_variable",
-        "name": "0"
+        "name": "VAR"
       }
     ],
     "output": "Number",

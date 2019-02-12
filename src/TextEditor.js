@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import CodeMirror from './codeMirror';
 import injectSheet from 'react-jss';
+import refreshable from './refreshable';
 import parser, {ParseError} from './lang/parser';
 import PrettyPrinter from './lang/prettyprinter';
 import {light as colors} from './lang/colors';
+import db from './db';
+import {group} from './config';
 
 const style = {
   '@global': {
@@ -44,10 +47,12 @@ class TextEditor extends Component {
       this.editor.clearGutter('errors');
       this.markers.forEach(x => x.clear());
       this.markers = [];
-
+      
       sharedState.clearMessages();
       sharedState.removeEventListener('ast', this.astChange);
-      sharedState.updateAst(parser.parse(this.editor.getValue()));
+      const ast = parser.parse(this.editor.getValue());
+      sharedState.updateAst(ast);
+      db.storeAst(localStorage.getItem('Auth'), group, localStorage.getItem('Username'), this.props.task, 'text', ast);
       sharedState.addEventListener('ast', this.astChange);
     } catch(e) {
       if (e instanceof ParseError) {
@@ -67,7 +72,6 @@ class TextEditor extends Component {
         } else {
           this.errorLine = e.line;
           symbol = '\u25B4';
-
           message = 'neznani simbol'
         }
 
@@ -109,6 +113,8 @@ class TextEditor extends Component {
     if (value != null) {
       this.editor.setValue(value);
     }
+    /*const toolboxDiv = document.getElementsByClassName('CodeMirror-gutters')[0];
+    toolboxDiv.style.height = '100%';*/
 
     this.editor.on("change", this.editorChange);
     this.props.sharedState.addEventListener('ast', this.astChange);
@@ -126,4 +132,4 @@ class TextEditor extends Component {
   }
 }
 
-export default injectSheet(style)(TextEditor);
+export default refreshable(injectSheet(style)(TextEditor));

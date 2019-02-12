@@ -1,17 +1,34 @@
 import React, { Component } from 'react';
 import injectSheet from 'react-jss';
+import refreshable from './refreshable';
 import {evaluate} from './evaluator';
 import {light as colors} from './lang/colors';
+import db from './db';
+import {group} from './config';
 
 const style = {
-  console: {
-    position: 'absolute',
-    overflow: 'auto',
-    margin: 0,
-    paddingLeft: '20px',
-    boxSizing: 'border-box',
+  container: {
     width: '100%',
     height: '100%',
+    position: 'absolute',
+    backgroundColor: 'white'
+  },
+  toolbar: {
+    backgroundColor: '#f7f7f7',
+    paddingLeft: 5,
+    outline: '1px solid #ddd',
+    '& button': {
+      all: 'unset',
+      padding: 8,
+      '&:hover': {
+        backgroundColor: 'gainsboro'
+      }
+    }
+  },
+  console: {
+    width: '100%',
+    height: '100%',
+    overflow: 'auto',
     fontFamily: 'Source Code Pro, monospace',
     fontSize: '13px',
   },
@@ -19,7 +36,11 @@ const style = {
     color: colors.io
   },
   input: {
-    width: 0
+    border: '1px solid transparent',
+    '&:hover': {
+      backgroundColor: 'whitesmoke',
+      border: '1px solid gray'
+    }
   }
 }
 
@@ -33,8 +54,19 @@ class Input extends Component {
     this.input.current.focus();
   }
 
+  onBlur = () => {
+    if (this.input.current.contentEditable) {
+      this.input.current.focus();
+    }
+  }
+
   render() {
-    return <span {...this.props} ref={this.input} contentEditable='true' style={{display: 'inline-block'}} />
+    return (
+      <React.Fragment>
+        <span {...this.props} ref={this.input} onBlur={this.onBlur} contentEditable='true' style={{display: 'inline-block'}} />
+        <br />
+      </React.Fragment>
+    );
   }
 }
 
@@ -43,7 +75,7 @@ class Console extends Component {
   constructor(props) {
     super(props);
 
-    this.ast = null;
+    this.ast = [];
     this.state = {
       messages: [],
       output: []
@@ -63,7 +95,9 @@ class Console extends Component {
 
     const print = (message) => {
       this.setState(prevState => {
-        return {output: prevState.output.concat([message])};
+        return {output: prevState.output.concat([
+          <span className={classes.input}>{message}</span>
+        ])};
       });
     }
 
@@ -91,40 +125,48 @@ class Console extends Component {
 
         this.setState(prevState => {
           return {output: prevState.output.concat([
-            <Input onKeyPress={onEnter} />
+            <Input className={classes.input} onKeyPress={onEnter} />
           ])};
         });
       });
     }
 
-    this.setState({output: []})
-    evaluate(this.ast, print, input);
+    this.setState({output: []}, () => {
+      db.storeAst(localStorage.getItem('Auth'), group, localStorage.getItem('Username'), this.props.task, 'run', this.ast);
+      evaluate(this.ast, print, input);
+    });
   }
 
   componentDidMount() {
-    const messages = JSON.parse(this.props.sharedStore.get('Console')) || this.state.messages;
+    const messages = JSON.parse(this.props.sharedStore.get('ConsoleMessages')) || this.state.messages;
     this.setState({messages});
+    this.ast = JSON.parse(this.props.sharedStore.get('ConsoleAst')) || this.ast;
 
     this.props.sharedState.addEventListener('messages', this.messagesChange);
     this.props.sharedState.addEventListener('ast', this.astChange);
   }
 
   componentWillUnmount() {
-    this.props.sharedStore.set('Console', JSON.stringify(this.state.messages));
+    this.props.sharedStore.set('ConsoleMessages', JSON.stringify(this.state.messages));
+    this.props.sharedStore.set('ConsoleAst', JSON.stringify(this.ast));
   }
 
   render() {
     const {classes} = this.props;
     return (
-      <pre className={classes.console}>
-        <button onClick={this.onRun}>Run</button><br />
-        {this.state.messages.map((x, i) =>
-          <div key={i} className={classes[x.type]}>{x.message}</div>
-        )}
-        {this.state.output}
-      </pre>
+      <div className={classes.container}>
+        <div className={classes.toolbar}>
+          <button onClick={this.onRun}>Run</button>
+        </div>
+        <pre className={classes.console}>
+          {this.state.messages.map((x, i) =>
+            <div key={i} className={classes[x.type]}>{x.message}</div>
+          )}
+          {this.state.output}
+        </pre>
+      </div>
     );
   }
 }
 
-export default injectSheet(style)(Console);
+export default refreshable(injectSheet(style)(Console));

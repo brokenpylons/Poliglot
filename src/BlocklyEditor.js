@@ -1,6 +1,20 @@
 import React, { Component } from 'react';
+import injectSheet from 'react-jss';
+import refreshable from './refreshable';
 import Blockly from './blockly';
 import {save, load, formatBlocks} from './converter';
+
+const style = {
+  '@global': {
+    '.blocklyMainBackground': {
+      strokeWidth: 0
+    },
+    '.blocklyToolboxDiv': {
+      backgroundColor: '#f7f7f7',
+      outline: '1px solid #ddd'
+    }
+  }
+};
 
 class BlocklyEditor extends Component {
   constructor(props) {
@@ -17,7 +31,7 @@ class BlocklyEditor extends Component {
   }
 
   getProgramBlocks() {
-    return this.workspace.getTopBlocks(true).filter(x => x.type === 'Program');
+    return this.workspace.getTopBlocks(true).filter(x => x.type === 'Program'); // TODO: Solve coupling
   }
 
   workspaceChange = event => {
@@ -50,12 +64,18 @@ class BlocklyEditor extends Component {
 
   componentDidMount() {
     this.workspace = Blockly.inject(this.editor.current, {
-        toolbox: this.props.toolbox,
+        toolbox: this.props.toolbox.xml,
         trashcan: true,
         scrollbars: false,
         collapse: true
     });
     this.workspace.scrollbar = new Blockly.Scrollbar(this.workspace, false);
+    for (let [key, callback] of Object.entries(this.props.toolbox.toolboxCategoryCallbacks)) {
+      this.workspace.registerToolboxCategoryCallback(key, callback);
+    }
+    for (let [key, callback] of Object.entries(this.props.toolbox.buttonCallbacks)) {
+      this.workspace.registerButtonCallback(key, callback);
+    }
 
     const xml = this.props.sharedStore.get('BlocklyEditor');
     if (xml != null) {
@@ -82,4 +102,4 @@ class BlocklyEditor extends Component {
   }
 }
 
-export default BlocklyEditor;
+export default refreshable(injectSheet(style)(BlocklyEditor));
