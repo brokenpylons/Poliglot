@@ -42,7 +42,7 @@ const table = {
     if (await descent(ctx, expr)) {
       await iterate(ctx, stmts);
       return {[next]: false};
-    } 
+    }
     return {[next]: true};
   },
 
@@ -85,7 +85,7 @@ const table = {
 
   And: binaryOperator((a, b) => a && b),
   Or: binaryOperator((a, b) => a || b),
-  Not: unaryOperator((a) => !a), 
+  Not: unaryOperator((a) => !a),
 
   String: function(ctx, args) {
       const [string] = args;
@@ -104,8 +104,6 @@ const table = {
   Input: async function(ctx) {
     return await ctx.input();
   },
-
-  // TODO: input
 
   Concat: binaryOperator((a, b) => a.toString() + b.toString()),
 

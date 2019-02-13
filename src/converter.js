@@ -59,7 +59,7 @@ function load(workspace, ast) {
     for (let [blockArg, astArg] of zip(blockArgs, astArgs)) {
       if (isValue(astArg)) {
         if (blockArg instanceof Blockly.FieldVariable) {
-          const variable = workspace.createVariable(astArg);
+          const variable = workspace.createVariable(astArg, 'Number');
           blockArg.setValue(variable.getId());
         } else {
           blockArg.setValue(astArg);
@@ -82,12 +82,12 @@ function load(workspace, ast) {
   if (ast == null) {
     return null;
   }
-  
+
   workspace.setResizesEnabled(false);
   const blocks = ast.map(generate);
   workspace.setResizesEnabled(true);
   return blocks;
-}	
+}
 
 function save(blocks) {
   function generate(block) {
@@ -128,9 +128,4 @@ function formatBlocks(blocks, padding = 2) {
   }
 }
 
-function format(workspace) {
-  const blocks = workspace.getTopBlocks(true);
-  formatBlocks(blocks);
-}
-
-export {save, load, formatBlocks, format};
+export {save, load, formatBlocks};

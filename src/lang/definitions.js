@@ -60,6 +60,10 @@ export const toolbox = {
   buttonCallbacks: {
     createVariable(button) {
       Blockly.Variables.createVariable(button.getTargetWorkspace(), null, 'Number');
+    },
+    center(button) {
+
+
     }
   }
 }

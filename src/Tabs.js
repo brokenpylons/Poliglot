@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import injectSheet from 'react-jss';
+import {TabsContext} from './TabsContext'
 
 const style = {
   container: {
@@ -19,12 +20,17 @@ class Tabs extends Component {
     super(props);
 
     this.state = {
-      activeTab: this.props.activeTab
+      activeTab: this.props.activeTab,
+      tabNames: [],
+      setActiveTab: this.setActiveTab
     }
   }
 
-  setActiveTab(tabName) {
-    console.log(tabName);
+  componentDidMount() {
+    this.setState({tabNames: React.Children.map(this.props.children, child => child.props.tabName)})
+  }
+
+  setActiveTab = tabName => {
     this.setState({activeTab: tabName});
   }
 
@@ -32,14 +38,11 @@ class Tabs extends Component {
     const {classes} = this.props;
     return (
       <div className={classes.container}>
-        <div>
+        <TabsContext.Provider value={this.state}>
           {React.Children.map(this.props.children, child =>
-            <button onClick={() => this.setActiveTab(child.props.tabName)}>{child.props.tabName}</button>
+            child.props.tabName === this.state.activeTab && <div className={classes.tab}>{child}</div>
           )}
-        </div>
-        {React.Children.map(this.props.children, child =>
-          child.props.tabName === this.state.activeTab && <div className={classes.tab}>{child}</div>
-        )}
+        </TabsContext.Provider>
       </div>
     );
   }

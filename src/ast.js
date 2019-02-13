@@ -1,3 +1,5 @@
+// TODO: Unused!!!
+
 function isValue(ast) {
   return typeof ast === 'string';
 }

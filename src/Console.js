@@ -11,6 +11,8 @@ const style = {
     width: '100%',
     height: '100%',
     position: 'absolute',
+    display: 'flex',
+    flexDirection: 'column',
     backgroundColor: 'white'
   },
   toolbar: {
@@ -19,18 +21,19 @@ const style = {
     outline: '1px solid #ddd',
     '& button': {
       all: 'unset',
-      padding: 8,
+      padding: '5px 10px',
       '&:hover': {
         backgroundColor: 'gainsboro'
       }
     }
   },
   console: {
-    width: '100%',
-    height: '100%',
+    flex: '1 1 0',
     overflow: 'auto',
+    margin: 0,
+    padding: 5,
     fontFamily: 'Source Code Pro, monospace',
-    fontSize: '13px',
+    fontSize: '13px'
   },
   error: {
     color: colors.io

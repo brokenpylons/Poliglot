@@ -26,7 +26,7 @@ class BlocklyEditor extends Component {
   }
 
   onWheel = (e) => {
-    const {scrollbar} = this.workspace;
+    const scrollbar = this.workspace.scrollbar.vScroll;
     scrollbar.set((scrollbar.handlePosition_ / scrollbar.ratio_) + e.deltaY);
   }
 
@@ -66,15 +66,30 @@ class BlocklyEditor extends Component {
     this.workspace = Blockly.inject(this.editor.current, {
         toolbox: this.props.toolbox.xml,
         trashcan: true,
-        scrollbars: false,
-        collapse: true
+        scrollbars: true,
+        collapse: true,
+        zoom: {
+          controls: true,
+          startScale: 1.0,
+          maxScale: 3,
+          minScale: 0.3,
+          scaleSpeed: 1.2
+        },
     });
-    this.workspace.scrollbar = new Blockly.Scrollbar(this.workspace, false);
     for (let [key, callback] of Object.entries(this.props.toolbox.toolboxCategoryCallbacks)) {
       this.workspace.registerToolboxCategoryCallback(key, callback);
     }
     for (let [key, callback] of Object.entries(this.props.toolbox.buttonCallbacks)) {
       this.workspace.registerButtonCallback(key, callback);
+    }
+    this.workspace.configureContextMenu = menuOptions => {
+      menuOptions.push({
+        text: 'Format',
+        enabled: true,
+        callback: () => {
+          formatBlocks(this.getProgramBlocks(), 22);
+        }
+      })
     }
 
     const xml = this.props.sharedStore.get('BlocklyEditor');
