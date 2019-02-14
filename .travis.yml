@@ -9,8 +9,6 @@ branches:
     - master
 script:
   - CI=false npm run build
-after_success:
-  - cp build/index.html build/200.html
 deploy:
   provider: pages
   skip-cleanup: true
