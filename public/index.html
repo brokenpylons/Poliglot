@@ -23,7 +23,10 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <script>
-      history.replaceState(null, null, document.referrer);
+      if (sessionStorage.hasOwnProperty('redirect')) {
+        history.replaceState(null, null, sessionStorage.getItem('redirect'));
+        sessionStorage.removeItem('redirect');
+      }
     </script>
 
     <script src="%PUBLIC_URL%/blockly/blockly_compressed.js"></script>
