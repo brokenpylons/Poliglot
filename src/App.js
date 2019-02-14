@@ -58,7 +58,7 @@ class App extends Component {
               <Link className={classes.link} to="/">Domov</Link>
               <Link className={classes.link} to="/user">Uporabnik</Link>
               <Link className={classes.link} to="/playground1">Bločno</Link>
-              <Link className={classes.link} to="/playground2">Tekstovno</Link>
+              <Link className={classes.link} to="/test">Tekstovno</Link>
               <Link className={classes.link} to="/exam">Naloge</Link>
               {this.state.username}
             </nav>
@@ -67,7 +67,7 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route path="/user" component={() => <User setUsername={this.setUsername} />} />
             <Route path="/playground1" component={Playground1} />
-            <Route path="/playground2" component={Playground2} />
+            <Route path="/test" component={Playground2} />
             <Route path="/exam" component={Exam} />
           </div>
         </div>
@@ -88,7 +88,7 @@ const tasks = [
         12 * 13<br/>
         22 / 12<br/>
       </pre>
-      
+
       <pre>
         Primer 1:<br/>
         Zdravo!<br/>
@@ -258,7 +258,7 @@ class Home extends Component {
           <Link to="/playground1">Bločno</Link>
         </p>
         <p>
-          <Link to="/playground2">Tekstovno</Link>
+          <Link to="/test">Tekstovno</Link>
         </p>
         <p>
           <Link to="/exam">Naloge</Link>
@@ -355,7 +355,7 @@ class Exam extends Component {
           <SharedState tabName={i + 1} name={task.title} task={task} render={(sharedState, sharedStore) => (
             <SplitView style={{}}>
               <SplitView style={{flexDirection: 'column'}}>
-                <div style={{display: 'flex', height: '100%', flexDirection: 'column'}}> 
+                <div style={{display: 'flex', height: '100%', flexDirection: 'column'}}>
                   <TabsHeader />
                   <Task title={task.title} content={task.content} />
                 </div>
