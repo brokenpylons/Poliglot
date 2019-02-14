@@ -1,13 +1,13 @@
 {
-  "main.css": "/Poliglot/static/css/main.e2c866fc.chunk.css",
-  "main.js": "/Poliglot/static/js/main.4b40a59b.chunk.js",
-  "main.js.map": "/Poliglot/static/js/main.4b40a59b.chunk.js.map",
-  "static/js/1.b8284bdc.chunk.js": "/Poliglot/static/js/1.b8284bdc.chunk.js",
-  "static/js/1.b8284bdc.chunk.js.map": "/Poliglot/static/js/1.b8284bdc.chunk.js.map",
-  "runtime~main.js": "/Poliglot/static/js/runtime~main.5f678df2.js",
-  "runtime~main.js.map": "/Poliglot/static/js/runtime~main.5f678df2.js.map",
-  "static/css/main.e2c866fc.chunk.css.map": "/Poliglot/static/css/main.e2c866fc.chunk.css.map",
-  "index.html": "/Poliglot/index.html",
-  "precache-manifest.5b55f1a30a656e8b8d4eae0cdfd9da78.js": "/Poliglot/precache-manifest.5b55f1a30a656e8b8d4eae0cdfd9da78.js",
-  "service-worker.js": "/Poliglot/service-worker.js"
+  "main.css": "/static/css/main.e2c866fc.chunk.css",
+  "main.js": "/static/js/main.6606f4a6.chunk.js",
+  "main.js.map": "/static/js/main.6606f4a6.chunk.js.map",
+  "static/js/1.b8284bdc.chunk.js": "/static/js/1.b8284bdc.chunk.js",
+  "static/js/1.b8284bdc.chunk.js.map": "/static/js/1.b8284bdc.chunk.js.map",
+  "runtime~main.js": "/static/js/runtime~main.229c360f.js",
+  "runtime~main.js.map": "/static/js/runtime~main.229c360f.js.map",
+  "static/css/main.e2c866fc.chunk.css.map": "/static/css/main.e2c866fc.chunk.css.map",
+  "index.html": "/index.html",
+  "precache-manifest.8bc440c982bafd9bc76f31c33efb6ec4.js": "/precache-manifest.8bc440c982bafd9bc76f31c33efb6ec4.js",
+  "service-worker.js": "/service-worker.js"
 }
