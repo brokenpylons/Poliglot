@@ -58,7 +58,7 @@ class App extends Component {
               <Link className={classes.link} to="/">Domov</Link>
               <Link className={classes.link} to="/user">Uporabnik</Link>
               <Link className={classes.link} to="/playground1">Bločno</Link>
-              <Link className={classes.link} to="/test">Tekstovno</Link>
+              <Link className={classes.link} to="/playground2">Tekstovno</Link>
               <Link className={classes.link} to="/exam">Naloge</Link>
               {this.state.username}
             </nav>
@@ -67,7 +67,7 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route path="/user" component={() => <User setUsername={this.setUsername} />} />
             <Route path="/playground1" component={Playground1} />
-            <Route path="/test" component={Playground2} />
+            <Route path="/playground2" component={Playground2} />
             <Route path="/exam" component={Exam} />
           </div>
         </div>
@@ -258,7 +258,7 @@ class Home extends Component {
           <Link to="/playground1">Bločno</Link>
         </p>
         <p>
-          <Link to="/test">Tekstovno</Link>
+          <Link to="/playground2">Tekstovno</Link>
         </p>
         <p>
           <Link to="/exam">Naloge</Link>
