@@ -4,7 +4,6 @@ import refreshable from './refreshable';
 import {evaluate} from './evaluator';
 import {light as colors} from './lang/colors';
 import db from './db';
-import {group} from './config';
 
 const style = {
   container: {
@@ -104,6 +103,14 @@ class Console extends Component {
       });
     }
 
+    const error = message => {
+      this.setState(prevState => {
+        return {output: prevState.output.concat([
+          <div className={classes.error}>{message}</div>
+        ])};
+      });
+    }
+
     const input = async () => {
       return new Promise((resolve, reject) => {
         const onEnter = async event => {
@@ -113,7 +120,7 @@ class Console extends Component {
             if (text !== '') {
               resolve(Number(text));
             } else {
-              this.props.sharedState.addMessage('error', "TERMINATED");
+              error("Konec");
               reject();
             }
             event.target.contentEditable = false;
@@ -135,8 +142,8 @@ class Console extends Component {
     }
 
     this.setState({output: []}, () => {
-      db.storeAst(localStorage.getItem('Auth'), group, localStorage.getItem('Username'), this.props.task, 'run', this.ast);
-      evaluate(this.ast, print, input);
+      db.storeAst(localStorage.getItem('Auth'), localStorage.getItem('Username'), this.props.task, 'run', this.ast);
+      evaluate(this.ast, print, input, error);
     });
   }
 

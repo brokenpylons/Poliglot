@@ -7,6 +7,7 @@ const style = {
     backgroundColor: '#f7f7f7',
     paddingLeft: 5,
     outline: '1px solid #ddd',
+    borderBottom: '1px solid #ddd',
     '& button': {
       all: 'unset',
       padding: '5px 10px',
@@ -18,6 +19,7 @@ const style = {
 }
 
 class TabsHeader extends Component {
+
   render() {
     const {classes} = this.props;
     return (

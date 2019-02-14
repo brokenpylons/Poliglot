@@ -17,7 +17,7 @@ async function iterate(ctx, a) {
 function binaryOperator(fun) {
   return async (ctx, args) => {
     const [a, b] = args;
-    return fun(await descent(ctx, a), await descent(ctx, b));
+    return fun(await descent(ctx, a), await descent(ctx, b), ctx);
   }
 }
 
@@ -123,7 +123,17 @@ const table = {
 
   Plus: binaryOperator((a, b) => a + b),
   Minus: binaryOperator((a, b) => a - b),
-  Divides: binaryOperator((a, b) => Math.trunc(a / b)),
+  Divides: binaryOperator((a, b, ctx) => {
+    if (a == 0 && b == 0) {
+      ctx.error("Nedoločeno");
+      throw 0;
+    }
+    if (b == 0) {
+      ctx.error("Nedefinirano");
+      throw 0;
+    }
+    return Math.trunc(a / b);
+  }),
   Times: binaryOperator((a, b) => a * b),
   Eq: binaryOperator((a, b) => a === b),
   Neq: binaryOperator((a, b) => a !== b),
@@ -133,10 +143,10 @@ const table = {
   Leq: binaryOperator((a, b) => a >= b)
 }
 
-async function evaluate(ast, print, input) {
+async function evaluate(ast, print, input, error) {
   try {
     for (let node of ast) {
-      await descent({print, input}, node);
+      await descent({print, input, error}, node);
     }
   } catch(e) {
     if (e instanceof SemanticError) {

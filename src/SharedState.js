@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import db from './db';
 
 class State {
-  constructor(key) {
-    this.key = key;
+  constructor(task) {
+    this.task = task;
     this.ast = null;
     this.messages = [];
     this.listeners ={};
@@ -18,9 +19,15 @@ class State {
     this.dispatchEvent('messages', this.messages);
   }
 
-  updateAst(ast) {
+  updateAst(ast, source) {
+    if (JSON.stringify(this.ast) === JSON.stringify(ast)) {
+      console.log("SAME");
+      return;
+    }
+    console.log(source);
     this.ast = ast;
     this.dispatchEvent('ast', this.ast);
+    db.storeAst(localStorage.getItem('Auth'), localStorage.getItem('Username'), this.task, source, ast); // TODO: Should state know about task?
   }
 
   addEventListener(event, callback) {
@@ -65,7 +72,7 @@ class SharedState extends Component {
   constructor(props) {
     super(props);
 
-    this.state = new State();
+    this.state = new State(this.props.task);
     this.store = new Store(this.props.name);
   }
 

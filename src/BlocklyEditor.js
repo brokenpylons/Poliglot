@@ -44,7 +44,7 @@ class BlocklyEditor extends Component {
       try {
         sharedState.clearMessages();
         sharedState.removeEventListener('ast', this.astChange);
-        sharedState.updateAst(save(this.getProgramBlocks()));
+        sharedState.updateAst(save(this.getProgramBlocks()), 'blocks');
         sharedState.addEventListener('ast', this.astChange);
       } catch(e) {
         // TODO: bettter solution?

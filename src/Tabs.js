@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import injectSheet from 'react-jss';
 import {TabsContext} from './TabsContext'
+import db from './db';
 
 const style = {
   container: {
@@ -14,7 +15,7 @@ const style = {
   }
 }
 
-class Tabs extends Component {
+class Tabs extends Component { // Make observable
 
   constructor(props) {
     super(props);
@@ -31,6 +32,7 @@ class Tabs extends Component {
   }
 
   setActiveTab = tabName => {
+    db.tabSwitch(localStorage.getItem('Auth'), localStorage.getItem('Username'), tabName);
     this.setState({activeTab: tabName});
   }
 

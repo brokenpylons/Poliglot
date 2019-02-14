@@ -3,7 +3,10 @@ import injectSheet from 'react-jss';
 
 const style = {
   container: {
+    flex: '1 1 0',
+    height: '100px',
     backgroundColor: 'white',
+    overflow: 'auto',
     padding: 5
   },
   title: {
