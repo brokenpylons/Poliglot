@@ -2,7 +2,7 @@
   "name": "Poliglot",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://brokenpylons.github.io/Poliglot/",
+  "homepage": "https://poliglot.brokenpylons.com/",
   "dependencies": {
     "jss": "^9.8.7",
     "jss-preset-default": "^10.0.0-alpha.7",
