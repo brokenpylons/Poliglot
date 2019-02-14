@@ -4,8 +4,13 @@ node_js:
 cache:
   directories:
     - node_modules
+branches:
+  only:
+    - master
 script:
   - CI=false npm run build
+after_success:
+  - cp build/index.html build/200.html
 deploy:
   provider: pages
   skip-cleanup: true
@@ -14,3 +19,4 @@ deploy:
   local_dir: build
   on:
     branch: master
+  fqdn: poliglot.brokenpylons.com
