@@ -1,2 +1,7 @@
-export const group = 'block-text';
-export const version = 1.0;
+import packageJson from '../package.json';
+
+export default {
+  name: packageJson.name,
+  group: 'block-text',
+  version: packageJson.version
+}

@@ -11,6 +11,7 @@ import Tabs from './Tabs';
 import TabsHeader from './TabsHeader';
 import {blocks, toolbox, mode} from './lang/definitions.js'
 import db from './db';
+import config from './config';
 
 const style = {
   container: {
@@ -28,6 +29,10 @@ const style = {
   },
   title: {
     margin: '10px'
+  },
+  version: {
+    margin: '5px',
+    fontSize: '10px',
   },
   link: {
     margin: '10px'
@@ -54,7 +59,7 @@ class App extends Component {
         <div className={classes.container}>
           <div className={classes.header}>
             <nav className={classes.navigation}>
-              <span className={classes.title}>EditorGenerator</span>
+              <span className={classes.title}>{config.name}<span className={classes.version}>{config.version}</span></span>
               <Link className={classes.link} to="/">Domov</Link>
               <Link className={classes.link} to="/user">Uporabnik</Link>
               <Link className={classes.link} to="/playground1">Bločno</Link>
@@ -253,7 +258,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <h1>EditorGenerator</h1>
+        <h1>{config.name}</h1>
         <p>
           <Link to="/playground1">Bločno</Link>
         </p>

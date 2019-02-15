@@ -1,4 +1,4 @@
-import {group, version} from './config';
+import config from './config';
 
 const url = 'http://164.8.230.207:5984/'
 const dbname = 'editorgenerator2'
@@ -24,8 +24,8 @@ function storeAst(auth, user, task, action, ast) {
     method: 'POST',
     body: JSON.stringify({
       timestamp: Date.now(),
-      group,
-      version,
+      group: config.group,
+      version: config.version,
       user,
       task,
       action,
@@ -43,8 +43,8 @@ function tabSwitch(auth, user, tabName) {
     method: 'POST',
     body: JSON.stringify({
       timestamp: Date.now(),
-      group,
-      version,
+      group: config.group,
+      version: config.version,
       user,
       tabName,
     }),
