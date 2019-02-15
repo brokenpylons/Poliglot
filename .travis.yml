@@ -17,4 +17,5 @@ deploy:
   local_dir: build
   on:
     branch: master
-  fqdn: poliglot.brokenpylons.com
+  fqdn: poliglot.feri.um.si
+    #fqdn: poliglot.brokenpylons.com
