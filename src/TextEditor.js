@@ -12,7 +12,10 @@ const style = {
       position: 'absolute',
     },
     '.errors': {
-      width: 15,
+      height: '1e6px', // HACK: height: 100% doesn't work in chrome
+      borderLeft: '1px solid #ddd',
+      backgroundColor: '#f2f2f2',
+      width: 15
     }
   },
   container: {
@@ -77,6 +80,8 @@ class TextEditor extends Component {
           marker.style.color = 'red';
           marker.style.fontSize = '20px';
           marker.style.lineHeight = '13px';
+          marker.style.margin = '0 auto';
+          marker.style.textAlign = 'center';
           marker.innerHTML = symbol;
           marker.title = message;
           return marker;
