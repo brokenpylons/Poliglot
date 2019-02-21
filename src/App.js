@@ -278,18 +278,13 @@ class User extends Component {
   onSubmit = async event => {
     event.preventDefault();
 
-    const {username, password} = event.target;
-    const auth = window.btoa(`${username.value}:${password.value}`);
-    if (await db.tryAccess(auth)) {
-      localStorage.setItem('Username', username.value);
-      localStorage.setItem('Auth', auth);
-      this.props.setUsername(username.value);
-    }
+    const username = event.target.username.value;
+    const password = event.target.password.value;
+    await db.signIn(username, password);
+    this.props.setUsername(username);
   }
 
   onClick = () => {
-    localStorage.removeItem('Username');
-    localStorage.removeItem('Auth');
     this.props.setUsername(null);
   }
 

@@ -1,62 +1,39 @@
+import {api as Api} from '@poliglot/shared';
 import config from './config';
 
-const url = 'http://164.8.230.207:5984/'
-const dbname = 'editorgenerator2'
+const api = new (Api(window.fetch))('http://localhost:8080');
 
-async function tryAccess(auth) {
-  return new Promise((resolve, reject) => {
-    fetch(`${url}${dbname}`, {
-      method: 'HEAD',
-      headers: {
-        'Authorization': `Basic ${auth}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    }).then(response => {
-      resolve(true);
-    }).catch(error => {
-      resolve(false);
-    });
+async function signIn(username, password) {
+  const response = await api.post('signin', {
+    username,
+    password
   });
+  const data = await response.json();
+  sessionStorage.setItem('token', data.token);
 }
 
-function storeAst(auth, user, task, action, ast) {
-  fetch(`${url}${dbname}`, {
-    method: 'POST',
-    body: JSON.stringify({
-      timestamp: Date.now(),
-      group: config.group,
-      version: config.version,
-      user,
-      task,
-      action,
-      ast,
-    }),
-    headers: {
-      'Authorization': `Basic ${auth}`,
-      'Content-Type': 'application/json'
-    }
-  });
+async function storeAst(task, action, ast) {
+  const token = sessionStorage.getItem('token');
+  const headers = api.authorization(token);
+  await api.post('log/change', {
+    version: config.version,
+    task,
+    action,
+    ast,
+  }, headers);
 }
 
-function tabSwitch(auth, user, tabName) {
-  fetch(`${url}${dbname}`, {
-    method: 'POST',
-    body: JSON.stringify({
-      timestamp: Date.now(),
-      group: config.group,
-      version: config.version,
-      user,
-      tabName,
-    }),
-    headers: {
-      'Authorization': `Basic ${auth}`,
-      'Content-Type': 'application/json'
-    }
-  });
+async function tabSwitch(tabName) {
+  const token = sessionStorage.getItem('token');
+  const headers = api.authorization(token);
+  await api.post('log/tabswitch', {
+    version: config.version,
+    tabName
+  }, headers);
 }
 
 export default {
-  tryAccess,
+  signIn,
   storeAst,
   tabSwitch
 }

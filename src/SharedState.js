@@ -27,7 +27,7 @@ class State {
     console.log(source);
     this.ast = ast;
     this.dispatchEvent('ast', this.ast);
-    db.storeAst(localStorage.getItem('Auth'), localStorage.getItem('Username'), this.task, source, ast); // TODO: Should state know about task?
+    db.storeAst(this.task, source, ast); // TODO: Should state know about task?
   }
 
   addEventListener(event, callback) {

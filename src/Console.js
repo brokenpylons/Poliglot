@@ -142,7 +142,7 @@ class Console extends Component {
     }
 
     this.setState({output: []}, () => {
-      db.storeAst(localStorage.getItem('Auth'), localStorage.getItem('Username'), this.props.task, 'run', this.ast);
+      db.storeAst(this.props.task, 'run', this.ast);
       evaluate(this.ast, print, input, error);
     });
   }

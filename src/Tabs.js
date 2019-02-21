@@ -32,7 +32,7 @@ class Tabs extends Component { // Make observable
   }
 
   setActiveTab = tabName => {
-    db.tabSwitch(localStorage.getItem('Auth'), localStorage.getItem('Username'), tabName);
+    db.tabSwitch(tabName);
     this.setState({activeTab: tabName});
   }
 
