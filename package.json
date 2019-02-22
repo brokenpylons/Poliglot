@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@poliglot/shared": "git+https://bitbucket.org/poliglotenvironment/poliglotshared.git",
+    "@poliglot/shared": "git+https://bitbucket.org/poliglotenvironment/shared.git",
     "jss": "^9.8.7",
     "jss-preset-default": "^10.0.0-alpha.7",
     "react": "^16.8.3",
