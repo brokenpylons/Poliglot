@@ -2,8 +2,7 @@ import {Api} from '@poliglot/shared';
 import config from './config';
 
 console.log(typeof window)
-const api = new Api('http://api.poliglot.brokenpylons.com:10080', window.fetch.bind(window));
-//'http://localhost:8080'
+const api = new Api(process.env.REACT_APP_APIURL || 'http://localhost:8080', window.fetch.bind(window));
 
 async function signIn(username, password) {
   const response = await api.post('signin', {
