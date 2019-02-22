@@ -9,6 +9,10 @@ async function signIn(username, password) {
     username,
     password
   });
+  if (!response.ok) {
+    throw new Error('Wrong username or password!');
+  }
+
   const data = await response.json();
   sessionStorage.setItem('token', data.token);
 }
