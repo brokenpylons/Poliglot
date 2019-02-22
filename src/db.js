@@ -1,7 +1,9 @@
-import {api as Api} from '@poliglot/shared';
+import {Api} from '@poliglot/shared';
 import config from './config';
 
-const api = new (Api(window.fetch))('http://localhost:8080');
+console.log(typeof window)
+const api = new Api('http://api.poliglot.brokenpylons.com:10080', window.fetch.bind(window));
+//'http://localhost:8080'
 
 async function signIn(username, password) {
   const response = await api.post('signin', {
@@ -14,22 +16,20 @@ async function signIn(username, password) {
 
 async function storeAst(task, action, ast) {
   const token = sessionStorage.getItem('token');
-  const headers = api.authorization(token);
-  await api.post('log/change', {
+  await api.post('log/change', api.authorization(token), {
     version: config.version,
     task,
     action,
     ast,
-  }, headers);
+  });
 }
 
 async function tabSwitch(tabName) {
   const token = sessionStorage.getItem('token');
-  const headers = api.authorization(token);
-  await api.post('log/tabswitch', {
+  await api.post('log/tabswitch', api.authorization(token), {
     version: config.version,
     tabName
-  }, headers);
+  });
 }
 
 export default {

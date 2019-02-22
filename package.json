@@ -4,12 +4,12 @@
   "private": true,
   "dependencies": {
     "@poliglot/shared": "git+https://bitbucket.org/poliglotenvironment/poliglotshared.git",
-    "jss": "9.8.7",
-    "jss-preset-default": "10.0.0-alpha.7",
-    "react": "16.7.0",
-    "react-dom": "16.7.0",
-    "react-jss": "8.6.1",
-    "react-router-dom": "4.3.1",
+    "jss": "^9.8.7",
+    "jss-preset-default": "^10.0.0-alpha.7",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "react-jss": "^8.6.1",
+    "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.5"
   },
   "scripts": {
