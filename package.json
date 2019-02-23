@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@poliglot/shared": "git+https://bitbucket.org/poliglotenvironment/shared.git",
+    "commonmark": "^0.28.1",
     "jss": "^9.8.7",
     "jss-preset-default": "^10.0.0-alpha.7",
     "react": "^16.8.3",

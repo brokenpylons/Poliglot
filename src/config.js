@@ -1,7 +1,6 @@
 import packageJson from '../package.json';
 
 export default {
-  name: packageJson.name,
-  group: 'block-text',
+  name: 'Poliglot',
   version: packageJson.version
 }

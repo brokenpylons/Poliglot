@@ -1,15 +1,16 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Link, Redirect} from "react-router-dom";
 import injectSheet from 'react-jss';
-import TextEditor from './TextEditor.js'
-import BlocklyEditor from './BlocklyEditor'
+import TextEditor from './TextEditor.js';
+import BlocklyEditor from './BlocklyEditor';
 import SplitView from './SplitView';
 import Console from './Console';
 import SharedState from './SharedState';
 import Task from './Task';
 import Tabs from './Tabs';
 import TabsHeader from './TabsHeader';
-import {blocks, toolbox, mode} from './lang/definitions.js'
+import Booklet from './Booklet';
+import {blocks, toolbox, mode} from './lang/definitions.js';
 import db from './db';
 import config from './config';
 
@@ -61,6 +62,7 @@ class App extends Component {
             <nav className={classes.navigation}>
               <span className={classes.title}>{config.name}<span className={classes.version}>{config.version}</span></span>
               <Link className={classes.link} to="/">Domov</Link>
+              <Link className={classes.link} to="/booklet">Knjiga</Link>
               <Link className={classes.link} to="/user">Uporabnik</Link>
               <Link className={classes.link} to="/playground1">Bločno</Link>
               <Link className={classes.link} to="/playground2">Tekstovno</Link>
@@ -71,6 +73,7 @@ class App extends Component {
           <div style={{flex: '1 1 0', padding: '10px'}}>
             <Route exact path="/" component={Home} />
             <Route path="/user" component={() => <User setUsername={this.setUsername} />} />
+            <Route path="/booklet" component={Booklet} />
             <Route path="/playground1" component={Playground1} />
             <Route path="/playground2" component={Playground2} />
             <Route path="/exam" component={Exam} />
