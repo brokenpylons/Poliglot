@@ -8,11 +8,14 @@ class Booklet extends Component {
     this.container = React.createRef();
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     var reader = new commonmark.Parser();
     var writer = new commonmark.HtmlRenderer();
 
-    var parsed = reader.parse("Hello *world*");
+    const response = await fetch('https://booklet.poliglot.brokenpylons.com/index.md');
+    const data = await response.text();
+
+    var parsed = reader.parse(data);
     var result = writer.render(parsed);
 
     this.container.current.innerHTML = result;
