@@ -23,6 +23,7 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <script>
+      // HACK: If redirected from 404.html page
       if (sessionStorage.hasOwnProperty('redirect')) {
         history.replaceState(null, null, sessionStorage.getItem('redirect'));
         sessionStorage.removeItem('redirect');

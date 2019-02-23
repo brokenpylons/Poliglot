@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!--
+      HACK: Redirect to index.html
+
+      When an user enters a location in the URL bar, they get served this page
+      with a 404 error because there is no actuall file at that location (this
+      is a SPA). So we solve that problem, by storing the requested location,
+      redirecting to index.html using a meta refresh tag (which is treated the
+      same as 301 redirect by crawlers) and then finally restoring the location
+      at the start of index.html.
+    -->
     <script>
       sessionStorage.setItem('redirect', location.href);
     </script>
