@@ -49,6 +49,10 @@ class App extends Component {
     }
   }
 
+  componentDidMount() {
+    document.title = config.name;
+  }
+
   setUsername = username => {
     this.setState({username})
   }

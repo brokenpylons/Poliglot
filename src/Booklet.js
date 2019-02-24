@@ -9,15 +9,27 @@ class Booklet extends Component {
   }
 
   async componentDidMount() {
-    var reader = new commonmark.Parser();
-    var writer = new commonmark.HtmlRenderer();
+    const reader = new commonmark.Parser();
+    const writer = new commonmark.HtmlRenderer();
 
     const response = await fetch('https://booklet.poliglot.brokenpylons.com/index.md');
     const data = await response.text();
 
-    var parsed = reader.parse(data);
-    var result = writer.render(parsed);
+    const parsed = reader.parse(data);
+    const walker = parsed.walker();
 
+    let event;
+    while (event = walker.next()) {
+      const node = event.node;
+
+      console.log(node);
+      if (node.type === 'code_block') {
+        node._type = 'html_block';
+        node.literal = '<b>Hello</b>';
+      }
+    }
+
+    const result = writer.render(parsed);
     this.container.current.innerHTML = result;
   }
 
