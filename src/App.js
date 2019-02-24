@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Link, Redirect} from "react-router-dom";
 import injectSheet from 'react-jss';
+import Home from './Home';
 import TextEditor from './TextEditor.js';
 import BlocklyEditor from './BlocklyEditor';
 import SplitView from './SplitView';
@@ -266,24 +267,7 @@ const tasks = [
   },
 ]
 
-class Home extends Component {
-  render() {
-    return (
-      <div>
-        <h1>{config.name}</h1>
-        <p>
-          <Link to="/playground1">Bločno</Link>
-        </p>
-        <p>
-          <Link to="/playground2">Tekstovno</Link>
-        </p>
-        <p>
-          <Link to="/exam">Naloge</Link>
-        </p>
-     </div>
-    );
-  }
-}
+
 
 class User extends Component {
 
