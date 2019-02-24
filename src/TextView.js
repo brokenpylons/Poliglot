@@ -6,7 +6,7 @@ import PrettyPrinter from './lang/prettyprinter';
 const style = { // TODO: Duplication
   '@global': {
     '.CodeMirror': {
-      height: 'auto'
+      height: '100%'
     },
   },
   container: {
