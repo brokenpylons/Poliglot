@@ -126,6 +126,8 @@ function formatBlocks(blocks, padding = 2) {
     moveTo(block, 0, position);
     position += block.height + padding;
   }
+
+  return position - padding;
 }
 
 export {save, load, formatBlocks};

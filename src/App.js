@@ -11,6 +11,8 @@ import Tabs from './Tabs';
 import TabsHeader from './TabsHeader';
 import Booklet from './Booklet';
 import {blocks, toolbox, mode} from './lang/definitions.js';
+import Blockly from './blockly';
+import CodeMirror from './codeMirror';
 import db from './db';
 import config from './config';
 
@@ -51,6 +53,9 @@ class App extends Component {
 
   componentDidMount() {
     document.title = config.name;
+
+    Blockly.defineBlocksWithJsonArray(blocks);
+    CodeMirror.defineSimpleMode('custom', mode);
   }
 
   setUsername = username => {
@@ -325,8 +330,8 @@ class Playground1 extends Component {
             <Console sharedState={sharedState} sharedStore={sharedStore} />
           </SplitView>
           <SplitView style={{flexDirection: 'column'}}>
-            <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} blocks={blocks} toolbox={toolbox} />
-            <TextEditor sharedState={sharedState} sharedStore={sharedStore} mode={mode} />
+            <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={toolbox} />
+            <TextEditor sharedState={sharedState} sharedStore={sharedStore} />
           </SplitView>
         </SplitView>
       )} />
@@ -344,8 +349,8 @@ class Playground2 extends Component {
             <Console sharedState={sharedState} sharedStore={sharedStore} task='playground' />
           </SplitView>
           <SplitView style={{flexDirection: 'column'}}>
-            <TextEditor sharedState={sharedState} sharedStore={sharedStore} mode={mode} />
-            <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} blocks={blocks} toolbox={toolbox} />
+            <TextEditor sharedState={sharedState} sharedStore={sharedStore} />
+            <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={toolbox} />
           </SplitView>
         </SplitView>
       )} />
@@ -369,7 +374,7 @@ class Exam extends Component {
                 <Console sharedState={sharedState} sharedStore={sharedStore} task={task} />
               </SplitView>
               <SplitView style={{flexDirection: 'column'}}>
-                <TextEditor sharedState={sharedState} sharedStore={sharedStore} mode={mode} />
+                <TextEditor sharedState={sharedState} sharedStore={sharedStore} />
               </SplitView>
             </SplitView>
             )} />

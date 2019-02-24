@@ -21,8 +21,6 @@ class BlocklyEditor extends Component {
     super(props);
     this.editor = React.createRef();
     this.workspace = null;
-
-    Blockly.defineBlocksWithJsonArray(this.props.blocks);
   }
 
   onWheel = (e) => {

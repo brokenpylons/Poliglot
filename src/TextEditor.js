@@ -12,7 +12,7 @@ const style = {
       position: 'absolute',
     },
     '.errors': {
-      height: '1e6px', // HACK: height: 100% doesn't work in chrome
+      minHeight: 'calc(100% + 30px)',  // HACK: min-height: 100% doesn't work in chrome
       borderLeft: '1px solid #ddd',
       backgroundColor: '#f2f2f2',
       width: 15
@@ -48,7 +48,7 @@ class TextEditor extends Component {
       this.editor.clearGutter('errors');
       this.markers.forEach(x => x.clear());
       this.markers = [];
-      
+
       sharedState.clearMessages();
       sharedState.removeEventListener('ast', this.astChange);
       const ast = parser.parse(this.editor.getValue());
@@ -100,7 +100,6 @@ class TextEditor extends Component {
   }
 
   componentDidMount() {
-    CodeMirror.defineSimpleMode('custom', this.props.mode);
     this.editor = CodeMirror(this.container.current, {
       lineNumbers: true,
       indentUnit: 4,
@@ -124,9 +123,9 @@ class TextEditor extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const {classes} = this.props;
     return (
-        <div className={classes.container} ref={this.container} />
+      <div className={classes.container} ref={this.container} />
     );
   }
 }
