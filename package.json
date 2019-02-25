@@ -12,7 +12,8 @@
     "react-dom": "^16.8.3",
     "react-jss": "^8.6.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^2.1.5"
+    "react-scripts": "^2.1.5",
+    "sjcl": "^1.0.8"
   },
   "scripts": {
     "start": "react-scripts start",

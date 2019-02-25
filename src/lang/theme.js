@@ -5,7 +5,7 @@ const style = {
   '@global': {
     '.CodeMirror': {
       fontFamily: 'Source Code Pro, monospace',
-      fontSize: '13px',
+      fontSize: '0.9rem'
     },
     '.cm-s-custom span.cm-program': { 
       color: colors.program,

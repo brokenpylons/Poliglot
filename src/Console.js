@@ -32,7 +32,7 @@ const style = {
     margin: 0,
     padding: 5,
     fontFamily: 'Source Code Pro, monospace',
-    fontSize: '13px'
+    fontSize: '0.9rem'
   },
   error: {
     color: colors.io

@@ -315,13 +315,14 @@ class Playground1 extends Component {
           </SplitView>
           <SplitView style={{flexDirection: 'column'}}>
             <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={toolbox} />
-            <TextEditor sharedState={sharedState} sharedStore={sharedStore} />
           </SplitView>
         </SplitView>
       )} />
     );
   }
 }
+
+// <TextEditor sharedState={sharedState} sharedStore={sharedStore} />
 
 class Playground2 extends Component {
   render() {
@@ -334,13 +335,14 @@ class Playground2 extends Component {
           </SplitView>
           <SplitView style={{flexDirection: 'column'}}>
             <TextEditor sharedState={sharedState} sharedStore={sharedStore} />
-            <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={toolbox} />
           </SplitView>
         </SplitView>
       )} />
     );
   }
 }
+
+// <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={toolbox} />
 
 class Exam extends Component {
   render() {
