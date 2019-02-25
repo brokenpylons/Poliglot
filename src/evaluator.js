@@ -83,9 +83,9 @@ const table = {
     }
   },
 
-  And: binaryOperator((a, b) => a && b),
-  Or: binaryOperator((a, b) => a || b),
-  Not: unaryOperator((a) => !a),
+  And: binaryOperator((a, b) => (a && b)|0),
+  Or: binaryOperator((a, b) => (a || b)|0),
+  Not: unaryOperator((a) => (!a)|0),
 
   String: function(ctx, args) {
       const [string] = args;
@@ -138,12 +138,12 @@ const table = {
     return Math.trunc(a / b);
   }),
   Times: binaryOperator((a, b) => a * b),
-  Eq: binaryOperator((a, b) => a === b),
-  Neq: binaryOperator((a, b) => a !== b),
-  Gt: binaryOperator((a, b) => a < b),
-  Geq: binaryOperator((a, b) => a <= b),
-  Lt: binaryOperator((a, b) => a > b),
-  Leq: binaryOperator((a, b) => a >= b)
+  Eq: binaryOperator((a, b) => (a === b)|0),
+  Neq: binaryOperator((a, b) => (a !== b)|0),
+  Gt: binaryOperator((a, b) => (a < b)|0),
+  Geq: binaryOperator((a, b) => (a <= b)|0),
+  Lt: binaryOperator((a, b) => (a > b)|0),
+  Leq: binaryOperator((a, b) => (a >= b)|0)
 }
 
 async function evaluate(ast, print, input, error, delimiter) {
