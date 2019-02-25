@@ -8,6 +8,7 @@ const style = {
   container: {
     display: 'flex',
     flexFlow: 'row',
+    padding: '10px 0'
   },
   child: {
     flex: '1 1 0',

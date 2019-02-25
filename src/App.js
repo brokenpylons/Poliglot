@@ -54,9 +54,6 @@ class App extends Component {
 
   componentDidMount() {
     document.title = config.name;
-
-    Blockly.defineBlocksWithJsonArray(blocks);
-    CodeMirror.defineSimpleMode('custom', mode);
   }
 
   setUsername = username => {
@@ -64,6 +61,9 @@ class App extends Component {
   }
 
   render() {
+    Blockly.defineBlocksWithJsonArray(blocks); // TODO: Should this really be here? I doesn't work in componentDidMount (not called on refresh)
+    CodeMirror.defineSimpleMode('custom', mode);
+
     const {classes} = this.props;
     return (
       <Router>

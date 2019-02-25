@@ -97,7 +97,7 @@ export default [
   },
   {
     "type": "Assignment",
-    "message0": "set %1 %2",
+    "message0": "%1 %2",
     "args0": [
       {
         "type": "field_variable",

@@ -109,6 +109,9 @@ const table = {
 
   Id: function(ctx, args) {
     const [id] = args;
+    if (!(id in ctx.variables)) {
+      ctx.error("Nedefinirana spremenljivka");
+    }
     return ctx.variables[id];
   },
 
@@ -143,10 +146,11 @@ const table = {
   Leq: binaryOperator((a, b) => a >= b)
 }
 
-async function evaluate(ast, print, input, error) {
+async function evaluate(ast, print, input, error, delimiter) {
   try {
     for (let node of ast) {
       await descent({print, input, error}, node);
+      delimiter();
     }
   } catch(e) {
     if (e instanceof SemanticError) {

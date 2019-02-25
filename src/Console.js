@@ -111,6 +111,14 @@ class Console extends Component {
       });
     }
 
+    const delimiter = message => {
+      this.setState(prevState => {
+        return {output: prevState.output.concat([
+          <hr style={{backgroundColor: 'gainsboro', height: '1px', border: 0}} />
+        ])};
+      });
+    }
+
     const input = async () => {
       return new Promise((resolve, reject) => {
         const onEnter = async event => {
@@ -143,7 +151,7 @@ class Console extends Component {
 
     this.setState({output: []}, () => {
       db.storeAst(this.props.task, 'run', this.ast);
-      evaluate(this.ast, print, input, error);
+      evaluate(this.ast, print, input, error, delimiter);
     });
   }
 

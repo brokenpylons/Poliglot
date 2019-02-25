@@ -9,7 +9,15 @@ const style = {
     display: 'flex',
     flexDirection: 'column',
     maxWidth: '1000px',
-    margin: 'auto'
+    margin: 'auto',
+
+    '& p': {
+      lineHeight: '1.5em',
+    },
+    '& code': {
+      backgroundColor: 'whitesmoke',
+      border: '1px solid gainsboro'
+    }
   }
 };
 
