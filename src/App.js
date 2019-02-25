@@ -271,6 +271,15 @@ const tasks = [
 
 class User extends Component {
 
+  onSignUp = async event => {
+    event.preventDefault();
+
+    const username = event.target.username.value;
+    const group = event.target.group.value;
+    const password = event.target.password.value;
+    await db.signUp(username, group, password);
+  }
+
   onSubmit = async event => {
     event.preventDefault();
 
@@ -287,18 +296,37 @@ class User extends Component {
   render() {
     return (
       <div>
-        <form style={{display: 'table', borderSpacing: 10, outline: '1px solid #ddd'}} onSubmit={this.onSubmit}>
-          <div style={{display: 'table-row'}}>
-            <label style={{display: 'table-cell'}}>Uporabniško ime:</label>
-            <input style={{display: 'table-cell'}} type="text" name="username" />
-          </div>
-          <div style={{display: 'table-row'}}>
-            <label style={{display: 'table-cell'}}>Geslo:</label>
-            <input style={{display: 'table-cell'}} type="password" name="password" />
-          </div>
-          <input type='submit' value='Prijava' />
-          <button onClick={this.onClick}>Odjava</button>
-        </form>
+        <div>
+          <form style={{display: 'table', borderSpacing: 10, outline: '1px solid #ddd'}} onSubmit={this.onSignUp}>
+            <div style={{display: 'table-row'}}>
+              <label style={{display: 'table-cell'}}>Uporabniško ime:</label>
+              <input style={{display: 'table-cell'}} type="text" name="username" />
+            </div>
+            <div style={{display: 'table-row'}}>
+              <label style={{display: 'table-cell'}}>Skupina:</label>
+              <input style={{display: 'table-cell'}} type="text" name="group" />
+            </div>
+            <div style={{display: 'table-row'}}>
+              <label style={{display: 'table-cell'}}>Geslo:</label>
+              <input style={{display: 'table-cell'}} type="password" name="password" />
+            </div>
+            <input type='submit' value='Registracija' />
+          </form>
+        </div>
+        <div>
+          <form style={{display: 'table', borderSpacing: 10, outline: '1px solid #ddd'}} onSubmit={this.onSubmit}>
+            <div style={{display: 'table-row'}}>
+              <label style={{display: 'table-cell'}}>Uporabniško ime:</label>
+              <input style={{display: 'table-cell'}} type="text" name="username" />
+            </div>
+            <div style={{display: 'table-row'}}>
+              <label style={{display: 'table-cell'}}>Geslo:</label>
+              <input style={{display: 'table-cell'}} type="password" name="password" />
+            </div>
+            <input type='submit' value='Prijava' />
+            <button onClick={this.onClick}>Odjava</button>
+          </form>
+        </div>
       </div>
     );
   }

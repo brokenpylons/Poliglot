@@ -17,6 +17,19 @@ async function signIn(username, password) {
   sessionStorage.setItem('token', data.token);
 }
 
+async function signUp(username, group, password) {
+  const response = await api.post('signup', {
+    username,
+    group,
+    password
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+}
+
 async function storeAst(task, action, ast) {
   const token = sessionStorage.getItem('token');
   await api.post('log/change', api.authorization(token), {
@@ -37,6 +50,7 @@ async function tabSwitch(tabName) {
 
 export default {
   signIn,
+  signUp,
   storeAst,
   tabSwitch
 }
