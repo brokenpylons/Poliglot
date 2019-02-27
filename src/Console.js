@@ -26,13 +26,25 @@ const style = {
       }
     }
   },
+  split: {
+    display: 'flex',
+    flex: '1 1 0',
+    fontFamily: 'Source Code Pro, monospace',
+    fontSize: '0.9rem',
+  },
   console: {
     flex: '1 1 0',
     overflow: 'auto',
     margin: 0,
     padding: 5,
-    fontFamily: 'Source Code Pro, monospace',
-    fontSize: '0.9rem'
+    outline: '1px solid gainsboro',
+    backgroundColor: 'white'
+  },
+  watch: {
+    width: 200,
+    padding: 5,
+    outline: '1px solid gainsboro',
+    backgroundColor: '#fefefe'
   },
   error: {
     color: colors.io
@@ -80,8 +92,12 @@ class Console extends Component {
     this.ast = [];
     this.state = {
       messages: [],
-      output: []
+      output: [],
+      variables: [],
+      changed: null,
+      running: false
     }
+    this.step = null;
   }
 
   messagesChange = (messages) => {
@@ -101,7 +117,7 @@ class Console extends Component {
           <span className={classes.input}>{message}</span>
         ])};
       });
-    }
+    };
 
     const error = message => {
       this.setState(prevState => {
@@ -109,7 +125,7 @@ class Console extends Component {
           <div className={classes.error}>{message}</div>
         ])};
       });
-    }
+    };
 
     const delimiter = message => {
       this.setState(prevState => {
@@ -117,7 +133,7 @@ class Console extends Component {
           <hr style={{backgroundColor: 'gainsboro', height: '1px', border: 0}} />
         ])};
       });
-    }
+    };
 
     const input = async () => {
       return new Promise((resolve, reject) => {
@@ -147,12 +163,37 @@ class Console extends Component {
           ])};
         });
       });
-    }
+    };
+    
+    const wait = () => {
+      return new Promise(resolve => {
+        this.step = () => {
+          resolve();
+        }
+      });
+    };
 
-    this.setState({output: []}, () => {
+    const running = () => {
+      return this.state.running;
+    };
+
+    const update = (variables, changed) => {
+      this.setState({variables, changed});
+    };
+
+    this.setState({output: [], running: true}, () => {
       db.storeAst(this.props.task, 'run', this.ast);
-      evaluate(this.ast, print, input, error, delimiter);
+      evaluate(this.ast, print, input, error, wait, update, running, delimiter);
     });
+  }
+
+  onStep = () => {
+    this.step();
+    this.setState({changed: null});
+  }
+
+  onStop = () => {
+    this.setState({running: false});
   }
 
   componentDidMount() {
@@ -175,13 +216,24 @@ class Console extends Component {
       <div className={classes.container}>
         <div className={classes.toolbar}>
           <button onClick={this.onRun}>Run</button>
+          <button onClick={this.onStep}>Step</button>
+          <button onClick={this.onStop}>Stop</button>
         </div>
-        <pre className={classes.console}>
-          {this.state.messages.map((x, i) =>
-            <div key={i} className={classes[x.type]}>{x.message}</div>
-          )}
-          {this.state.output}
-        </pre>
+        <div className={classes.split}>
+          <pre className={classes.console}>
+            {this.state.messages.map((x, i) =>
+              <div key={i} className={classes[x.type]}>{x.message}</div>
+            )}
+            {this.state.output}
+          </pre>
+          <div className={classes.watch}>
+            {Object.entries(this.state.variables).map(([key, value]) => 
+              key === this.state.changed ?
+                <div style={{fontWeight: 600}}>{key}: {value}</div> :
+                <div>{key}: {value}</div>
+            )}
+          </div>
+        </div>
       </div>
     );
   }

@@ -10,6 +10,7 @@ async function descent(ctx, ast, previous) {
 async function iterate(ctx, a) {
   let previous;
   for (let x of a) {
+    await ctx.wait();
     previous = await descent(ctx, x, previous);
   }
 }
@@ -118,6 +119,7 @@ const table = {
   Assignment: async function(ctx, args) {
     const [id, expr] = args;
     ctx.variables[id] = await descent(ctx, expr);
+    ctx.update(ctx.variables, id);
   },
 
   Number: function(ctx, args) {
@@ -146,10 +148,10 @@ const table = {
   Leq: binaryOperator((a, b) => (a >= b)|0)
 }
 
-async function evaluate(ast, print, input, error, delimiter) {
+async function evaluate(ast, print, input, error, wait, update, running, delimiter) {
   try {
     for (let node of ast) {
-      await descent({print, input, error}, node);
+      await descent({print, input, error, wait, update, running}, node);
       delimiter();
     }
   } catch(e) {
