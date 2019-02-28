@@ -26,13 +26,25 @@ const style = {
       }
     }
   },
+  split: {
+    display: 'flex',
+    flex: '1 1 0',
+    fontFamily: 'Source Code Pro, monospace',
+    fontSize: '0.9rem',
+  },
   console: {
     flex: '1 1 0',
     overflow: 'auto',
     margin: 0,
     padding: 5,
-    fontFamily: 'Source Code Pro, monospace',
-    fontSize: '0.9rem'
+    outline: '1px solid gainsboro',
+    backgroundColor: 'white'
+  },
+  watch: {
+    width: 200,
+    padding: 5,
+    outline: '1px solid gainsboro',
+    backgroundColor: '#fefefe'
   },
   error: {
     color: colors.io
@@ -72,7 +84,7 @@ class Input extends Component {
   }
 }
 
-class Console extends Component {
+class Console extends Component { // TODO: A bit inefficient because the component is controlled
 
   constructor(props) {
     super(props);
@@ -80,44 +92,47 @@ class Console extends Component {
     this.ast = [];
     this.state = {
       messages: [],
-      output: []
+      output: [],
+      variables: [],
+      changed: null,
+      running: false,
+      stepping: false,
+      lock: true
     }
-  }
-
-  messagesChange = (messages) => {
-    this.setState({messages})
+    this.step = () => {};
+    this.rendered = null;
+    this.line = React.createRef();
   }
 
   astChange = (ast) => {
     this.ast = ast;
   }
 
-  onRun = async () => {
+  async run() {
     const {classes} = this.props;
 
     const print = (message) => {
-      this.setState(prevState => {
-        return {output: prevState.output.concat([
-          <span className={classes.input}>{message}</span>
-        ])};
+      return new Promise(resolve => {
+        this.rendered = () => {
+          resolve();
+        };
+        this.setState(prevState => {
+          return {output: [...prevState.output, <span className={classes.input}>{message}</span>]};
+        });
       });
-    }
+    };
 
     const error = message => {
       this.setState(prevState => {
-        return {output: prevState.output.concat([
-          <div className={classes.error}>{message}</div>
-        ])};
+        return {output: [...prevState.output, <div className={classes.error}>{message}</div>]};
       });
-    }
+    };
 
     const delimiter = message => {
       this.setState(prevState => {
-        return {output: prevState.output.concat([
-          <hr style={{backgroundColor: 'gainsboro', height: '1px', border: 0}} />
-        ])};
+        return {output: [prevState.output, <hr style={{backgroundColor: 'gainsboro', height: '1px', border: 0}} />]};
       });
-    }
+    };
 
     const input = async () => {
       return new Promise((resolve, reject) => {
@@ -147,12 +162,72 @@ class Console extends Component {
           ])};
         });
       });
+    };
+    
+    const wait = () => {
+      if (this.state.stepping) {
+        return new Promise(resolve => {
+          this.step = () => {
+            resolve();
+          }
+        });
+      }
+      return () => {};
+    };
+
+    const running = () => {
+      return this.state.running;
+    };
+
+    const update = (variables, changed) => {
+      this.setState({variables, changed});
+    };
+
+    this.setState({output: [], running: true, variables: [], changed: null}, async () => {
+      db.storeAst(this.props.task, 'run', this.ast);
+      await evaluate(this.ast, print, input, error, wait, update, running, delimiter);
+      this.setState({running: false});
+    });
+  }
+
+  onRun = () => {
+    if (!this.state.running) {
+      this.setState({stepping: false}, () => {
+        this.run();  
+      });
+      return;
     }
 
-    this.setState({output: []}, () => {
-      db.storeAst(this.props.task, 'run', this.ast);
-      evaluate(this.ast, print, input, error, delimiter);
+    this.setState({stepping: false}, () => {
+      this.step();
     });
+  }
+
+  onStep = () => {
+    if (!this.state.running) {
+      this.setState({stepping: true}, () => {
+        this.run();  
+      });
+      return;
+    }
+
+    this.step();
+    this.setState({changed: null});
+  }
+
+  onPause = () => {
+    this.setState({stepping: true});
+  }
+
+  onStop = () => {
+    this.setState({running: false}, () => {
+      this.step();
+    });
+  }
+
+  onScroll = event => {
+    this.setState({lock: this.line.current.scrollTop === this.line.current.scrollHeight - this.line.current.offsetHeight ||
+      this.line.current.scrollLeft === this.line.current.scrollWidth - this.line.current.offsetWidth});
   }
 
   componentDidMount() {
@@ -169,19 +244,42 @@ class Console extends Component {
     this.props.sharedStore.set('ConsoleAst', JSON.stringify(this.ast));
   }
 
+  componentDidUpdate() {
+    if (this.state.lock) {
+      this.line.current.scrollTop = this.line.current.scrollHeight;
+      this.line.current.scrollLeft = this.line.current.scrollWidth;
+    }
+    if (this.rendered != null) {
+      setTimeout(() => {
+        this.rendered();
+      }, 0);
+    }
+  }
+
   render() {
     const {classes} = this.props;
     return (
       <div className={classes.container}>
         <div className={classes.toolbar}>
           <button onClick={this.onRun}>Run</button>
+          <button onClick={this.onStep}>Step</button>
+          <button onClick={this.onPause}>Pause</button>
+          <button onClick={this.onStop}>Stop</button>
         </div>
-        <pre className={classes.console}>
-          {this.state.messages.map((x, i) =>
-            <div key={i} className={classes[x.type]}>{x.message}</div>
-          )}
-          {this.state.output}
-        </pre>
+        <div className={classes.split}>
+          <pre ref={this.line} className={classes.console} onScroll={this.onScroll}>
+            {this.state.output}
+          </pre>
+          {this.state.stepping &&
+            <div className={classes.watch}>
+              {Object.entries(this.state.variables).map(([key, value]) => 
+                key === this.state.changed ?
+                  <div style={{fontWeight: 600}}>{key}: {value}</div> :
+                  <div>{key}: {value}</div>
+              )}
+            </div>
+          }
+        </div>
       </div>
     );
   }

@@ -1,15 +1,21 @@
 import {isValue, isCommand, isList} from './ast';
 
 class SemanticError extends Error {}
+class RuntimeError extends Error {}
 
 async function descent(ctx, ast, previous) {
   const [c, ...args] = ast;
+  if (!ctx.running()) {
+    ctx.error("STOP");
+    throw new RuntimeError();
+  }
   return await table[c](ctx, args, previous);
 }
 
 async function iterate(ctx, a) {
   let previous;
   for (let x of a) {
+    await ctx.wait();
     previous = await descent(ctx, x, previous);
   }
 }
@@ -78,7 +84,7 @@ const table = {
 
   While: async function(ctx, args) {
     const [expr, stmts] = args;
-    for (let i = 0; i < 100 && await descent(ctx, expr); i++) {
+    while (await descent(ctx, expr)) {
       await iterate(ctx, stmts);
     }
   },
@@ -94,7 +100,7 @@ const table = {
 
   Print: async function(ctx, args) {
     const [expr] = args;
-    ctx.print(await descent(ctx, expr));
+    await ctx.print(await descent(ctx, expr));
   },
 
   Line: function(ctx) {
@@ -111,6 +117,7 @@ const table = {
     const [id] = args;
     if (!(id in ctx.variables)) {
       ctx.error("Nedefinirana spremenljivka");
+      throw RuntimeError();
     }
     return ctx.variables[id];
   },
@@ -118,6 +125,7 @@ const table = {
   Assignment: async function(ctx, args) {
     const [id, expr] = args;
     ctx.variables[id] = await descent(ctx, expr);
+    ctx.update(ctx.variables, id);
   },
 
   Number: function(ctx, args) {
@@ -129,11 +137,11 @@ const table = {
   Divides: binaryOperator((a, b, ctx) => {
     if (a == 0 && b == 0) {
       ctx.error("Nedoločeno");
-      throw 0;
+      throw new RuntimeError();
     }
     if (b == 0) {
       ctx.error("Nedefinirano");
-      throw 0;
+      throw new RuntimeError();
     }
     return Math.trunc(a / b);
   }),
@@ -146,18 +154,19 @@ const table = {
   Leq: binaryOperator((a, b) => (a >= b)|0)
 }
 
-async function evaluate(ast, print, input, error, delimiter) {
-  try {
-    for (let node of ast) {
-      await descent({print, input, error}, node);
-      delimiter();
+async function evaluate(ast, print, input, error, wait, update, running, delimiter) {
+  for (let node of ast) {
+    try {
+      await descent({print, input, error, wait, update, running}, node);
+    } catch(e) {
+      if (e instanceof SemanticError) {
+        print("ERROR");
+      } else if (e instanceof RuntimeError) {
+      } else {
+        throw e;
+      }
     }
-  } catch(e) {
-    if (e instanceof SemanticError) {
-      print("ERROR");
-    } else {
-      throw e;
-    }
+    delimiter();
   }
 }
 

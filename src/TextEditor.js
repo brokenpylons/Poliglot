@@ -49,7 +49,6 @@ class TextEditor extends Component {
       this.markers.forEach(x => x.clear());
       this.markers = [];
 
-      sharedState.clearMessages();
       sharedState.removeEventListener('ast', this.astChange);
       const ast = parser.parse(this.editor.getValue());
       sharedState.updateAst(ast, 'text');
