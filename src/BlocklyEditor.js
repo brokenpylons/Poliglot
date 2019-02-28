@@ -40,7 +40,6 @@ class BlocklyEditor extends Component {
 
       const {sharedState} = this.props;
       try {
-        sharedState.clearMessages();
         sharedState.removeEventListener('ast', this.astChange);
         sharedState.updateAst(save(this.getProgramBlocks()), 'blocks');
         sharedState.addEventListener('ast', this.astChange);
