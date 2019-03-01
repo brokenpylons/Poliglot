@@ -116,6 +116,7 @@ class Console extends Component { // TODO: A bit inefficient because the compone
         this.rendered = () => {
           resolve();
         };
+
         this.setState(prevState => {
           return {output: [...prevState.output, <span className={classes.input}>{message}</span>]};
         });
@@ -130,7 +131,7 @@ class Console extends Component { // TODO: A bit inefficient because the compone
 
     const delimiter = message => {
       this.setState(prevState => {
-        return {output: [prevState.output, <hr style={{backgroundColor: 'gainsboro', height: '1px', border: 0}} />]};
+        return {output: [...prevState.output, <hr style={{backgroundColor: 'gainsboro', height: '1px', border: 0}} />]};
       });
     };
 
@@ -246,7 +247,7 @@ class Console extends Component { // TODO: A bit inefficient because the compone
 
   componentDidUpdate() {
     if (this.state.lock) {
-      this.line.current.scrollTop = this.line.current.scrollHeight;
+      this.line.current.scrollTop = this.line.current.scrollHeight; // TODO: Rename line
       this.line.current.scrollLeft = this.line.current.scrollWidth;
     }
     if (this.rendered != null) {
