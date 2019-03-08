@@ -272,6 +272,25 @@ export default [
     "colour": colors.numbers
   },
   {
+    "type": "DividesInt",
+    "message0": "%1 // %2",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "0",
+        "check": "Number"
+      },
+      {
+        "type": "input_value",
+        "name": "1",
+        "check": "Number"
+      }
+    ],
+    "inputsInline": true,
+    "output": "Number",
+    "colour": colors.numbers
+  },
+  {
     "type": "Eq",
     "message0": "%1 = %2",
     "args0": [

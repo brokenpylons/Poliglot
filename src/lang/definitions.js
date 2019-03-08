@@ -32,6 +32,7 @@ export const toolbox = {
       <block type="Minus"></block>
       <block type="Times"></block>
       <block type="Divides"></block>
+      <block type="DividesInt"></block>
       <block type="Eq"></block>
       <block type="Neq"></block>
       <block type="Gt"></block>
@@ -77,7 +78,7 @@ export const mode = {
     {regex: /[{(]/, indent: true},
     {regex: /[})]/, dedent: true},
     {regex: /[a-zA-Z]+[0-9]*/, token: "variables"},
-    {regex: /[0-9]+/, token: "numbers"},
+    {regex: /-?[0-9]+(\.[0-9]+)?/, token: "numbers"},
   ],
   meta: {
     electricChars: '}'

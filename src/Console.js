@@ -125,7 +125,7 @@ class Console extends Component { // TODO: A bit inefficient because the compone
 
     const error = message => {
       this.setState(prevState => {
-        return {output: [...prevState.output, <div className={classes.error}>{message}</div>]};
+        return {output: [...prevState.output, <div className={classes.error}>{message}</div>], running: false};
       });
     };
 
@@ -141,17 +141,13 @@ class Console extends Component { // TODO: A bit inefficient because the compone
           event.persist();
           if (event.key === 'Enter') {
             const text = event.target.textContent;
-            if (text !== '') {
+            if (text !== '' && isFinite(text)) {
               resolve(Number(text));
             } else {
-              error("Konec");
+              error("Neveljaven vnos");
               reject();
             }
             event.target.contentEditable = false;
-            event.preventDefault();
-            return;
-          }
-          if (!isFinite(event.key)) {
             event.preventDefault();
             return;
           }
@@ -164,7 +160,7 @@ class Console extends Component { // TODO: A bit inefficient because the compone
         });
       });
     };
-    
+
     const wait = () => {
       if (this.state.stepping) {
         return new Promise(resolve => {
@@ -194,7 +190,7 @@ class Console extends Component { // TODO: A bit inefficient because the compone
   onRun = () => {
     if (!this.state.running) {
       this.setState({stepping: false}, () => {
-        this.run();  
+        this.run();
       });
       return;
     }
@@ -207,7 +203,7 @@ class Console extends Component { // TODO: A bit inefficient because the compone
   onStep = () => {
     if (!this.state.running) {
       this.setState({stepping: true}, () => {
-        this.run();  
+        this.run();
       });
       return;
     }
@@ -273,7 +269,7 @@ class Console extends Component { // TODO: A bit inefficient because the compone
           </pre>
           {this.state.stepping &&
             <div className={classes.watch}>
-              {Object.entries(this.state.variables).map(([key, value]) => 
+              {Object.entries(this.state.variables).map(([key, value]) =>
                 key === this.state.changed ?
                   <div style={{fontWeight: 600}}>{key}: {value}</div> :
                   <div>{key}: {value}</div>

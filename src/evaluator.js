@@ -100,7 +100,11 @@ const table = {
 
   Print: async function(ctx, args) {
     const [expr] = args;
-    await ctx.print(await descent(ctx, expr));
+    let value = await descent(ctx, expr)
+    if (!Number.isInteger(value)) {
+      value = value.toFixed(2);
+    }
+    await ctx.print(value);
   },
 
   Line: function(ctx) {
@@ -129,12 +133,23 @@ const table = {
   },
 
   Number: function(ctx, args) {
-    return parseInt(args, 10);
+    return parseFloat(args, 10);
   },
 
   Plus: binaryOperator((a, b) => a + b),
   Minus: binaryOperator((a, b) => a - b),
   Divides: binaryOperator((a, b, ctx) => {
+    if (a == 0 && b == 0) {
+      ctx.error("Nedoločeno");
+      throw new RuntimeError();
+    }
+    if (b == 0) {
+      ctx.error("Nedefinirano");
+      throw new RuntimeError();
+    }
+    return a / b;
+  }),
+  DividesInt: binaryOperator((a, b, ctx) => {
     if (a == 0 && b == 0) {
       ctx.error("Nedoločeno");
       throw new RuntimeError();
