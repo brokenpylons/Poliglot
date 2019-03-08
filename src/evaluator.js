@@ -101,7 +101,7 @@ const table = {
   Print: async function(ctx, args) {
     const [expr] = args;
     let value = await descent(ctx, expr)
-    if (typeof myVar === 'string' || myVar instanceof String) {
+    if (typeof value === 'string' || value instanceof String) {
       
     }
     else if (!Number.isInteger(value)) {
