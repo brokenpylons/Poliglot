@@ -114,6 +114,7 @@ function PrettyPrinter() {
       case 'Minus':
       case 'Times':
       case 'Divides':
+      case 'DividesInt':
       case 'Number':
       case 'Id':
       case 'Input':
@@ -147,6 +148,7 @@ function PrettyPrinter() {
       case 'Minus':
       case 'Times':
       case 'Divides':
+      case 'DividesInt':
       case 'Number':
       case 'Id':
       case 'Input':
@@ -189,6 +191,7 @@ function PrettyPrinter() {
       case 'Minus':
       case 'Times':
       case 'Divides':
+      case 'DividesInt':
       case 'Number':
       case 'Id':
       case 'Input':
@@ -231,6 +234,7 @@ function PrettyPrinter() {
       case 'Minus':
       case 'Times':
       case 'Divides':
+      case 'DividesInt':
       case 'Number':
       case 'Id':
       case 'Input':
@@ -278,6 +282,7 @@ function PrettyPrinter() {
         return expr2_2(...args);
       case 'Times':
       case 'Divides':
+      case 'DividesInt':
       case 'Number':
       case 'Id':
       case 'Input':
@@ -313,6 +318,8 @@ function PrettyPrinter() {
         return expr3_1(...args);
       case 'Divides':
         return expr3_2(...args);
+      case 'DividesInt':
+        return expr3_3(...args);
       case 'Number':
       case 'Id':
       case 'Input':
@@ -327,7 +334,7 @@ function PrettyPrinter() {
       case 'Neq':
       case 'Plus':
       case 'Minus':
-        return expr3_3(ast);
+        return expr3_4(ast);
     }
   }
 
@@ -339,7 +346,11 @@ function PrettyPrinter() {
     return append(expr3(arg1), space(), text('/'), space(), expr4(arg2));
   }
 
-  function expr3_3(ast) {
+  function expr3_3(arg1, arg2) {
+    return append(expr3(arg1), space(), text('//'), space(), expr4(arg2));
+  }
+
+  function expr3_4(ast) {
     return expr4(ast);
   }
 
@@ -365,6 +376,7 @@ function PrettyPrinter() {
       case 'Minus':
       case 'Times':
       case 'Divides':
+      case 'DividesInt':
         return expr4_4(ast);
     }
   }
