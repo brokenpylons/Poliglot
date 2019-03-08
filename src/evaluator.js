@@ -101,7 +101,10 @@ const table = {
   Print: async function(ctx, args) {
     const [expr] = args;
     let value = await descent(ctx, expr)
-    if (!Number.isInteger(value)) {
+    if (typeof value === 'string' || value instanceof String) {
+      
+    }
+    else if (!Number.isInteger(value)) {
       value = value.toFixed(2);
     }
     await ctx.print(value);
