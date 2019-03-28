@@ -3,16 +3,16 @@ import {isValue, isCommand, isList} from './ast';
 class SemanticError extends Error {}
 class RuntimeError extends Error {}
 
-function toString(string) {
-  const number = Number(string);
-  if (!isNaN(number)) {
-    if (Number.isInteger(number)) {
-      return number.toString(); 
-    } else {
-      return number.toFixed(2);
-    }
+function toString(value) {
+  if (typeof value === 'string') {
+    return value; 
   }
-  return string;
+  
+  if (!Number.isInteger(value)) {
+    return number.toFixed(2);  
+  }
+  
+  return value.toString();
 }
 
 async function descent(ctx, ast, previous) {
