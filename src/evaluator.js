@@ -3,6 +3,18 @@ import {isValue, isCommand, isList} from './ast';
 class SemanticError extends Error {}
 class RuntimeError extends Error {}
 
+function toString(string) {
+  const number = Number(string);
+  if (!isNan(number)) {
+    if (Number.isInteger(number)) {
+      return number.toString(); 
+    } else {
+      return number.toFixed(2);
+    }
+  }
+  return string;
+}
+
 async function descent(ctx, ast, previous) {
   const [c, ...args] = ast;
   if (!ctx.running()) {
@@ -100,14 +112,8 @@ const table = {
 
   Print: async function(ctx, args) {
     const [expr] = args;
-    let value = await descent(ctx, expr)
-    if (typeof value === 'string' || value instanceof String) {
-      
-    }
-    else if (!Number.isInteger(value)) {
-      value = value.toFixed(2);
-    }
-    await ctx.print(value);
+    let value = await descent(ctx, expr);
+    await ctx.print(toString(value));
   },
 
   Line: function(ctx) {
@@ -118,7 +124,7 @@ const table = {
     return await ctx.input();
   },
 
-  Concat: binaryOperator((a, b) => a.toString() + b.toString()),
+  Concat: binaryOperator((a, b) => toString(a) + toString(b)),
 
   Id: function(ctx, args) {
     const [id] = args;
