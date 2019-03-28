@@ -9,7 +9,7 @@ function toString(value) {
   }
   
   if (!Number.isInteger(value)) {
-    return number.toFixed(2);  
+    return value.toFixed(2);  
   }
   
   return value.toString();
