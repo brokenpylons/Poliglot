@@ -5,7 +5,7 @@ class RuntimeError extends Error {}
 
 function toString(string) {
   const number = Number(string);
-  if (!isNan(number)) {
+  if (!isNaN(number)) {
     if (Number.isInteger(number)) {
       return number.toString(); 
     } else {
