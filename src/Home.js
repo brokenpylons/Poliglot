@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import injectSheet from 'react-jss';
 import {Link} from "react-router-dom";
 import config from './config';
+import {withTranslation} from 'react-i18next';
 
 const style = {
   container: {
@@ -13,22 +14,23 @@ const style = {
 class Home extends Component {
   render() {
     const {classes} = this.props;
+    const {t} = this.props;
 
     return (
       <div className={classes.container}>
         <h1>{config.name}</h1>
         <p>
-          <Link to="/playground1">Bločno</Link>
+          <Link to="/playground1">{t('Block')}</Link>
         </p>
         <p>
-          <Link to="/playground2">Tekstovno</Link>
+          <Link to="/playground2">{t('Text')}</Link>
         </p>
         <p>
-          <Link to="/exam">Naloge</Link>
+          <Link to="/exam">{t('Exercises')}</Link>
         </p>
      </div>
     );
   }
 }
 
-export default injectSheet(style)(Home);
+export default injectSheet(style)(withTranslation()(Home));

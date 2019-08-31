@@ -16,6 +16,9 @@ import Blockly from './blockly';
 import CodeMirror from './codeMirror';
 import db from './db';
 import config from './config';
+import {withTranslation} from 'react-i18next';
+
+import './i18n';
 
 const style = {
   container: {
@@ -65,18 +68,20 @@ class App extends Component {
     CodeMirror.defineSimpleMode('custom', mode);
 
     const {classes} = this.props;
+    const {t} = this.props;
+
     return (
       <Router>
         <div className={classes.container}>
           <div className={classes.header}>
             <nav className={classes.navigation}>
               <span className={classes.title}>{config.name}<span className={classes.version}>{config.version}</span></span>
-              <Link className={classes.link} to="/">Domov</Link>
-              <Link className={classes.link} to="/booklet">Knjiga</Link>
-              <Link className={classes.link} to="/user">Uporabnik</Link>
-              <Link className={classes.link} to="/playground1">Bločno</Link>
-              <Link className={classes.link} to="/playground2">Tekstovno</Link>
-              <Link className={classes.link} to="/exam">Naloge</Link>
+              <Link className={classes.link} to="/">{t('Home')}</Link>
+              <Link className={classes.link} to="/booklet">{t('Booklet')}</Link>
+              <Link className={classes.link} to="/user">{t('User')}</Link>
+              <Link className={classes.link} to="/playground1">{t('Block')}</Link>
+              <Link className={classes.link} to="/playground2">{t('Text')}</Link>
+              <Link className={classes.link} to="/exam">{t('Exercises')}</Link>
               {this.state.username}
             </nav>
           </div>
@@ -397,4 +402,4 @@ class Exam extends Component {
   }
 }
 
-export default injectSheet(style)(App);
+export default  injectSheet(style)(withTranslation()(App));
