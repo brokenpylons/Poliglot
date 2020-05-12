@@ -1,6 +1,7 @@
-import {light as colors} from './colors'
+import Blockly, {BlocklyUtils} from '../../blockly.js'
+import {light as colors} from '../../lang/colors'
 
-export default [
+export const blocks = [
   {
     "type": "Program",
     "message0": "program",
@@ -101,7 +102,8 @@ export default [
     "args0": [
       {
         "type": "field_variable",
-        "name": "VAR"
+        "name": "variable",
+        "variable": "variable"
       },
       {
         "type": "input_value",
@@ -119,7 +121,8 @@ export default [
     "args0": [
       {
         "type": "field_variable",
-        "name": "VAR"
+        "name": "variable",
+        "variable": "variable"
       }
     ],
     "output": "Number",
@@ -457,3 +460,66 @@ export default [
     "colour": colors.control
   }
 ];
+
+export const toolbox = {
+  xml: `<xml>
+    <category name="Program" colour="${colors.program}">
+      <block type="Program"></block>
+    </category>
+    <category name="Logic" colour="${colors.control}">
+      <block type="If"></block>
+      <block type="Elseif"></block>
+      <block type="Else"></block>
+      <block type="While"></block>
+      <block type="And"></block>
+      <block type="Or"></block>
+      <block type="Not"></block>
+    </category>
+    <category name="Console" colour="${colors.io}">
+      <block type="String"></block>
+      <block type="Print"></block>
+      <block type="Line"></block>
+      <block type="Input"></block>
+      <block type="Concat"></block>
+    </category>
+    <category name="Variables" custom="variables" colour="${colors.variables}">
+    </category>
+    <category name="Numbers" colour="${colors.numbers}">
+      <block type="Number"></block>
+      <block type="Plus"></block>
+      <block type="Minus"></block>
+      <block type="Times"></block>
+      <block type="Divides"></block>
+      <block type="DividesInt"></block>
+      <block type="Eq"></block>
+      <block type="Neq"></block>
+      <block type="Gt"></block>
+      <block type="Geq"></block>
+      <block type="Lt"></block>
+      <block type="Leq"></block>
+    </category>
+  </xml>`,
+
+  toolboxCategoryCallbacks: {
+    variables(workspace) {
+      var button = document.createElement('button');
+      button.setAttribute('text', 'Create variable...');
+      button.setAttribute('callbackKey', 'createVariable');
+
+      const xmls = [];
+      for (let variable of workspace.getVariablesOfType('Number')) {
+        xmls.push(BlocklyUtils.createBlockWithVariable("Id", "variable", variable));
+        xmls.push(BlocklyUtils.createBlockWithVariable("Assignment", "variable", variable));
+      }
+      return [button, ...xmls];
+    }
+  },
+
+  buttonCallbacks: {
+    createVariable(button) {
+      Blockly.Variables.createVariable(button.getTargetWorkspace(), null, 'Number');
+    },
+    center(button) {
+    }
+  }
+}

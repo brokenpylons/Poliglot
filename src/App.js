@@ -11,7 +11,9 @@ import Task from './Task';
 import Tabs from './Tabs';
 import TabsHeader from './TabsHeader';
 import Booklet from './Booklet';
-import {blocks, toolbox, mode} from './lang/definitions.js';
+import {mode} from './lang/definitions.js';
+import {blocks as limpidBlocks, toolbox as limpidToolbox} from './newlang/limpid/blockly.js';
+import {blocks as grammarBlocks, toolbox as grammarToolbox} from './newlang/grammar/blockly.js';
 import Blockly from './blockly';
 import CodeMirror from './codeMirror';
 import db from './db';
@@ -64,7 +66,8 @@ class App extends Component {
   }
 
   render() {
-    Blockly.defineBlocksWithJsonArray(blocks); // TODO: Should this really be here? I doesn't work in componentDidMount (not called on refresh)
+    Blockly.defineBlocksWithJsonArray(limpidBlocks); // TODO: Should this really be here? I doesn't work in componentDidMount (not called on refresh)
+    Blockly.defineBlocksWithJsonArray(grammarBlocks); // TODO: Should this really be here? I doesn't work in componentDidMount (not called on refresh)
     CodeMirror.defineSimpleMode('custom', mode);
 
     const {classes} = this.props;
@@ -81,6 +84,7 @@ class App extends Component {
               <Link className={classes.link} to="/user">{t('User')}</Link>
               <Link className={classes.link} to="/playground1">{t('Block')}</Link>
               <Link className={classes.link} to="/playground2">{t('Text')}</Link>
+              <Link className={classes.link} to="/grammar">{t('Grammar')}</Link>
               <Link className={classes.link} to="/exam">{t('Exercises')}</Link>
               {this.state.username}
             </nav>
@@ -91,6 +95,7 @@ class App extends Component {
             <Route path="/booklet" component={Booklet} />
             <Route path="/playground1" component={Playground1} />
             <Route path="/playground2" component={Playground2} />
+            <Route path="/grammar" component={Grammar} />
             <Route path="/exam" component={Exam} />
           </div>
         </div>
@@ -347,7 +352,7 @@ class Playground1 extends Component {
             <Console sharedState={sharedState} sharedStore={sharedStore} />
           </SplitView>
           <SplitView style={{flexDirection: 'column'}}>
-            <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={toolbox} />
+            <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={limpidToolbox} />
             <TextEditor sharedState={sharedState} sharedStore={sharedStore} />
           </SplitView>
         </SplitView>
@@ -367,8 +372,22 @@ class Playground2 extends Component {
           </SplitView>
           <SplitView style={{flexDirection: 'column'}}>
             <TextEditor sharedState={sharedState} sharedStore={sharedStore} />
-            <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={toolbox} />
+            <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={limpidToolbox} />
           </SplitView>
+        </SplitView>
+      )} />
+    );
+  }
+}
+
+class Grammar extends Component {
+  render() {
+    const {classes} = this.props;
+    return (
+      <SharedState name='grammar' task='grammar' render={(sharedState, sharedStore) => (
+        <SplitView style={{flexDirection: 'column'}}>
+            <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={grammarToolbox} />
+            <TextEditor sharedState={sharedState} sharedStore={sharedStore} />
         </SplitView>
       )} />
     );
@@ -392,7 +411,7 @@ class Exam extends Component {
               </SplitView>
               <SplitView style={{flexDirection: 'column'}}>
                 <TextEditor sharedState={sharedState} sharedStore={sharedStore} />
-                <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={toolbox} />
+                <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={limpidToolbox} />
               </SplitView>
             </SplitView>
             )} />
