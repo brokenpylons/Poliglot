@@ -195,9 +195,9 @@ export const toolbox = {
 
       const xmls = [];
       for (let variable of workspace.getVariablesOfType('')) {
-        xmls.push(BlocklyUtils.createBlockWithVariable("GrammarRule", variable));
-        xmls.push(BlocklyUtils.createBlockWithVariable("GrammarRuleNoLabel", variable));
-        xmls.push(BlocklyUtils.createBlockWithVariable("GrammarSymbol", variable));
+        xmls.push(BlocklyUtils.createBlockWithVariable("GrammarRule", "symbol", variable));
+        xmls.push(BlocklyUtils.createBlockWithVariable("GrammarRuleNoLabel", "symbol", variable));
+        xmls.push(BlocklyUtils.createBlockWithVariable("GrammarSymbol", "symbol", variable));
       }
       return [button, ...xmls];
     }
