@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import CodeMirror from './codeMirror';
 import injectSheet from 'react-jss';
 import refreshable from './refreshable';
-import parser, {ParseError} from './lang/parser';
-import PrettyPrinter from './lang/prettyprinter';
+/*import parser, {ParseError} from './lang/parser';
+import PrettyPrinter from './lang/prettyprinter';*/
 import {light as colors} from './lang/colors';
 
 const style = {
@@ -36,9 +36,9 @@ class TextEditor extends Component {
 
   constructor(props) {
     super(props);
+    this.engine = props.engine;
     this.container = React.createRef();
     this.editor = null;
-    this.prettyPrinter = new PrettyPrinter();
     this.markers = [];
   }
 
@@ -50,11 +50,12 @@ class TextEditor extends Component {
       this.markers = [];
 
       sharedState.removeEventListener('ast', this.astChange);
-      const ast = parser.parse(this.editor.getValue());
+      const ast = this.engine.parse(this.editor.getValue());
       sharedState.updateAst(ast, 'text');
       sharedState.addEventListener('ast', this.astChange);
     } catch(e) {
-      if (e instanceof ParseError) {
+      // TODO: add error reporting for new parser
+      /*if (e instanceof ParseError) {
 
         let symbol, message;
         if (e.loc != null) {
@@ -88,13 +89,13 @@ class TextEditor extends Component {
         this.editor.setGutterMarker(this.errorLine, "errors", makeMarker());
       } else {
         throw e;
-      }
+      }*/
     }
   }
 
   astChange = (ast) => {
     this.editor.off('change', this.editorChange);
-    this.editor.setValue(this.prettyPrinter.print(ast));
+    this.editor.setValue(this.engine.print(ast));
     this.editor.on('change', this.editorChange);
   }
 
@@ -103,7 +104,7 @@ class TextEditor extends Component {
       lineNumbers: true,
       indentUnit: 4,
       indentWithTabs: true,
-      mode: 'custom',
+      mode: this.props.mode,
       theme: 'custom',
       gutters: ['CodeMirror-linenumbers', 'errors']
     });

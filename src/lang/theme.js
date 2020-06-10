@@ -25,6 +25,10 @@ const style = {
     '.cm-s-custom span.cm-variables': {
       color: colors.variables
     },
+    '.cm-s-custom span.cm-labels': {
+      color: colors.variables,
+      fontWeight: 600
+    },
     '.cm-s-custom span.cm-numbers': {
       color: colors.numbers
     },

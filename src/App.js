@@ -12,16 +12,25 @@ import Tabs from './Tabs';
 import TabsHeader from './TabsHeader';
 import Booklet from './Booklet';
 import {mode} from './lang/definitions.js';
+
+import './lang/theme.js'
 import {blocks as limpidBlocks, toolbox as limpidToolbox} from './newlang/limpid/blockly.js';
+import {mode as limpidMode} from './newlang/limpid/mode.js';
+
 import {blocks as grammarBlocks, toolbox as grammarToolbox} from './newlang/grammar/blockly.js';
+import {engine as grammarEngine} from './newlang/grammar/engine.js';
+import {mode as grammarMode} from './newlang/grammar/mode.js';
+
 import {blocks as test1Blocks, toolbox as test1Toolbox} from './newlang/test1/blockly.js';
+import {engine as test1Engine} from './newlang/test1/engine.js';
+import {mode as test1Mode} from './newlang/test1/mode.js';
+
 import {blocks as test2Blocks, toolbox as test2Toolbox} from './newlang/test2/blockly.js';
 import Blockly from './blockly';
 import CodeMirror from './codeMirror';
 import db from './db';
 import config from './config';
 import {withTranslation} from 'react-i18next';
-import {meta} from '@brokenpylons/metalanguage';
 
 import './i18n';
 
@@ -69,12 +78,13 @@ class App extends Component {
   }
 
   render() {
-    console.log(meta.zero);
     Blockly.defineBlocksWithJsonArray(limpidBlocks); // TODO: Should this really be here? I doesn't work in componentDidMount (not called on refresh)
     Blockly.defineBlocksWithJsonArray(grammarBlocks);
     Blockly.defineBlocksWithJsonArray(test1Blocks);
     Blockly.defineBlocksWithJsonArray(test2Blocks);
-    CodeMirror.defineSimpleMode('custom', mode);
+    CodeMirror.defineSimpleMode('limpid', limpidMode);
+    CodeMirror.defineSimpleMode('grammar', grammarMode);
+    CodeMirror.defineSimpleMode('test1', test1Mode);
 
     const {classes} = this.props;
     const {t} = this.props;
@@ -363,7 +373,7 @@ class Playground1 extends Component {
           </SplitView>
           <SplitView style={{flexDirection: 'column'}}>
             <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={limpidToolbox} />
-            <TextEditor sharedState={sharedState} sharedStore={sharedStore} />
+            <TextEditor sharedState={sharedState} sharedStore={sharedStore} mode='limpid' />
           </SplitView>
         </SplitView>
       )} />
@@ -381,7 +391,7 @@ class Playground2 extends Component {
             <Console sharedState={sharedState} sharedStore={sharedStore} task='playground' />
           </SplitView>
           <SplitView style={{flexDirection: 'column'}}>
-            <TextEditor sharedState={sharedState} sharedStore={sharedStore} />
+            <TextEditor sharedState={sharedState} sharedStore={sharedStore} mode='limpid' />
             <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={limpidToolbox} />
           </SplitView>
         </SplitView>
@@ -396,8 +406,8 @@ class Grammar extends Component {
     return (
       <SharedState name='grammar' task='grammar' render={(sharedState, sharedStore) => (
         <SplitView style={{flexDirection: 'column'}}>
-            <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={grammarToolbox} />
-            <TextEditor sharedState={sharedState} sharedStore={sharedStore} />
+          <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={grammarToolbox} />
+          <TextEditor sharedState={sharedState} sharedStore={sharedStore} engine={grammarEngine} mode='grammar' />
         </SplitView>
       )} />
     );
@@ -410,7 +420,8 @@ class Test1 extends Component {
     return (
       <SharedState name='test1' task='test1' render={(sharedState, sharedStore) => (
         <SplitView style={{flexDirection: 'column'}}>
-            <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={test1Toolbox} />
+          <TextEditor sharedState={sharedState} sharedStore={sharedStore} engine={test1Engine} mode='test1' />
+          <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={test1Toolbox} />
         </SplitView>
       )} />
     );
@@ -423,7 +434,7 @@ class Test2 extends Component {
     return (
       <SharedState name='test2' task='test2' render={(sharedState, sharedStore) => (
         <SplitView style={{flexDirection: 'column'}}>
-            <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={test2Toolbox} />
+          <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={test2Toolbox} />
         </SplitView>
       )} />
     );

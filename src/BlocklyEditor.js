@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import injectSheet from 'react-jss';
 import refreshable from './refreshable';
 import Blockly from './blockly';
-import {save, load, formatBlocks} from './converter';
+import {save, load, formatBlocks} from './newconverter';
 
 const style = {
   '@global': {
@@ -29,7 +29,7 @@ class BlocklyEditor extends Component {
   }
 
   getProgramBlocks() {
-    return this.workspace.getTopBlocks(true).filter(x => x.type === 'Program'); // TODO: Solve coupling
+    return this.workspace.getTopBlocks(true); //.filter(x => x.type === 'Program'); // TODO: Solve coupling
   }
 
   workspaceChange = event => {

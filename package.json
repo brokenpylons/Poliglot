@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@poliglot/shared": "git+https://bitbucket.org/poliglotenvironment/shared.git",
-    "@brokenpylons/metalanguage": "1.0.1",
+    "@brokenpylons/metalanguage": "^1.0.25",
     "commonmark": "^0.28.1",
     "commonmark-react-renderer": "^4.3.4",
     "i18next": "^17.0.13",

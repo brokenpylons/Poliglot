@@ -20,10 +20,10 @@ class State {
   }
 
   updateAst(ast, source) {
-    if (JSON.stringify(this.ast) === JSON.stringify(ast)) {
+    /*if (JSON.stringify(this.ast) === JSON.stringify(ast)) {
       console.log("SAME");
       return;
-    }
+    }*/
     console.log(source);
     this.ast = ast;
     this.dispatchEvent('ast', this.ast);

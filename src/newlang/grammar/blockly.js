@@ -146,6 +146,14 @@ export const blocks = [
     "helpUrl": null
   },
   {
+    "type": "GrammarSpace",
+    "message0": "space",
+    "output": null,
+    "colour": colors.io,
+    "tooltip": null,
+    "helpUrl": null
+  },
+  {
     "type": "GrammarNest",
     "message0": "nest %1 %2",
     "args0": [
@@ -179,6 +187,7 @@ export const toolbox = {
       <block type="GrammarText"></block>
       <block type="GrammarNest"></block>
       <block type="GrammarLine"></block>
+      <block type="GrammarSpace"></block>
     </category>
     <category name="Operators" colour="${colors.control}">
       <block type="GrammarAnd"></block>
