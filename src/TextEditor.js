@@ -95,6 +95,7 @@ class TextEditor extends Component {
 
   astChange = (ast) => {
     this.editor.off('change', this.editorChange);
+    console.log("PRINT")
     this.editor.setValue(this.engine.print(ast));
     this.editor.on('change', this.editorChange);
   }

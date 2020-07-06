@@ -20,7 +20,8 @@ export const light = {
   variables: "#41b6e6",
   io: "#ff585d",
   numbers: "#ffb549",
-  bool: "#ff5a49"
+  bool: "#ff5a49",
+  comment: "#718988"
 };
 
 

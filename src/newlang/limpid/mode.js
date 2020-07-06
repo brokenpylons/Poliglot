@@ -10,6 +10,7 @@ export const mode = {
     {regex: /[})]/, dedent: true},
     {regex: /[a-zA-Z]+[0-9]*/, token: "variables"},
     {regex: /-?[0-9]+(\.[0-9]+)?/, token: "numbers"},
+    {regex: /[/][*]([^*]|([*][^/]))*[*]+[/]/, token: "comment"},
   ],
   meta: {
     electricChars: '}'

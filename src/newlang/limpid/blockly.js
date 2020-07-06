@@ -458,6 +458,97 @@ export const blocks = [
     "inputsInline": true,
     "output": "Number",
     "colour": colors.control
+  },
+  {
+    "type": "EmptyStatement",
+    "colour": colors.comment,
+    "previousStatement": null,
+    "nextStatement": null
+  },
+  {
+    "type": "EmptyExpression",
+    "output": null,
+    "colour": colors.comment
+  },
+  {
+    "type": "CommentCodeStatement",
+    "message0": "%1",
+    "colour": colors.comment,
+    "args0": [
+      {
+        "type": "input_statement",
+        "name": "0",
+        "check": null
+      }
+    ],
+    "previousStatement": null,
+    "nextStatement": null
+  },
+  {
+    "type": "CommentStatement",
+    "colour": colors.comment,
+    "message0": "%1",
+    "args0": [
+      {
+        "type": "field_input",
+        "text": "",
+        "name": "0"
+      }
+    ],
+    "previousStatement": null,
+    "nextStatement": null
+  },
+  {
+    "type": "CommentCodeExpression",
+    "colour": colors.comment,
+    "message0": "%1",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "0",
+        "check": null
+      }
+    ],
+    "inputsInline": true,
+    "output": null
+  },
+  {
+    "type": "CommentExpressionLeft",
+    "colour": colors.comment,
+    "message0": "%1 %2",
+    "args0": [
+      {
+        "type": "field_input",
+        "text": "",
+        "name": "0"
+      },
+      {
+        "type": "input_value",
+        "name": "1",
+        "check": null
+      }
+    ],
+    "inputsInline": true,
+    "output": null
+  },
+  {
+    "type": "CommentExpressionRight",
+    "colour": colors.comment,
+    "message0": "%1 %2",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "0",
+        "check": null
+      },
+      {
+        "type": "field_input",
+        "text": "",
+        "name": "1"
+      }
+    ],
+    "inputsInline": true,
+    "output": null
   }
 ];
 
@@ -497,6 +588,9 @@ export const toolbox = {
       <block type="Geq"></block>
       <block type="Lt"></block>
       <block type="Leq"></block>
+    </category>
+    <category name="Meta" colour="${colors.comment}">
+      <block type="EmptyStatement"></block>
     </category>
   </xml>`,
 

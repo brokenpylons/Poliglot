@@ -15,6 +15,7 @@ import {mode} from './lang/definitions.js';
 
 import './lang/theme.js'
 import {blocks as limpidBlocks, toolbox as limpidToolbox} from './newlang/limpid/blockly.js';
+import {engine as limpidEngine} from './newlang/limpid/engine.js';
 import {mode as limpidMode} from './newlang/limpid/mode.js';
 
 import {blocks as grammarBlocks, toolbox as grammarToolbox} from './newlang/grammar/blockly.js';
@@ -31,6 +32,7 @@ import CodeMirror from './codeMirror';
 import db from './db';
 import config from './config';
 import {withTranslation} from 'react-i18next';
+import {meta} from '@brokenpylons/metalanguage';
 
 import './i18n';
 
@@ -85,6 +87,7 @@ class App extends Component {
     CodeMirror.defineSimpleMode('limpid', limpidMode);
     CodeMirror.defineSimpleMode('grammar', grammarMode);
     CodeMirror.defineSimpleMode('test1', test1Mode);
+    console.log(meta.parse());
 
     const {classes} = this.props;
     const {t} = this.props;
@@ -372,8 +375,8 @@ class Playground1 extends Component {
             <Console sharedState={sharedState} sharedStore={sharedStore} />
           </SplitView>
           <SplitView style={{flexDirection: 'column'}}>
-            <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={limpidToolbox} />
-            <TextEditor sharedState={sharedState} sharedStore={sharedStore} mode='limpid' />
+            <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={limpidToolbox} engine={limpidEngine} />
+            <TextEditor sharedState={sharedState} sharedStore={sharedStore} engine={limpidEngine} mode='limpid' />
           </SplitView>
         </SplitView>
       )} />

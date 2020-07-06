@@ -32,6 +32,9 @@ const style = {
     '.cm-s-custom span.cm-numbers': {
       color: colors.numbers
     },
+    '.cm-s-custom span.cm-comment': {
+      color: colors.comment
+    },
   }
 };
 

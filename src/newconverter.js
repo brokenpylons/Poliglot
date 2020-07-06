@@ -29,7 +29,7 @@ function* zip(...args) {
   const iterators = args.map(x => x[Symbol.iterator]());
   while (true) {
     const current = iterators.map(x => x.next());
-    if (current.some(x => x.done)) {
+    if (current.every(x => x.done)) {
       break;
     }
     yield current.map(x => x.value);
@@ -49,34 +49,45 @@ function isList(ast) {
 }
 
 function load(workspace, ast) {
-/*  function generate(ast) {
-    let [c, ...astArgs] = ast;
-
-    const block = workspace.newBlock(c);
+  function generate(ast) {
+    const block = workspace.newBlock(ast.label);
     const blockArgs = getBlockArguments(block);
-    block.initSvg();
-    block.render();
+    if (ast.attributes[0]) {
+      block.setCommentText(ast.attributes[0].value);
+      console.log(block)
+    }
 
-    for (let [blockArg, astArg] of zip(blockArgs, astArgs)) {
-      if (isValue(astArg)) {
+    for (let [blockArg, child] of zip(blockArgs, ast.children)) {
+      if (child.label === "Empty") {
+        continue;
+      }
+      if (blockArg === undefined) {
+        const child2 = generate(child);
+        block.nextConnection.connect(child2.previousConnection);
+        continue;
+      }
+
+      if (child.type === "leaf") {
         if (blockArg instanceof Blockly.FieldVariable) {
-          const variable = workspace.createVariable(astArg, 'Number');
+          const variable = workspace.createVariable(child.lexeme, 'Number');
           blockArg.setValue(variable.getId());
         } else {
-          blockArg.setValue(astArg);
+          blockArg.setValue(child);
         }
-      } else if (isCommand(astArg)) {
-        const child = generate(astArg);
-        blockArg.connection.connect(child.outputConnection);
-      } else if (isList(astArg)) {
-        let connection = blockArg.connection;
-        for (let item of astArg) {
-          const child = generate(item);
-          connection.connect(child.previousConnection);
-          connection = child.nextConnection;
+      } else if (child.type === "node") {
+        const child2 = generate(child);
+        switch (blockArg.type) {
+          case Blockly.INPUT_VALUE:
+            blockArg.connection.connect(child2.outputConnection);
+            break;
+          case Blockly.NEXT_STATEMENT:
+            blockArg.connection.connect(child2.previousConnection);
+            break;
         }
       }
     }
+    block.initSvg();
+    block.render();
     return block;
   }
 
@@ -84,17 +95,21 @@ function load(workspace, ast) {
     return null;
   }
 
-  workspace.setResizesEnabled(false);
-  const blocks = ast.map(generate);
-  workspace.setResizesEnabled(true);
-  return blocks;*/
-  return undefined;
+  try {
+    workspace.setResizesEnabled(false);
+    const blocks = generate(ast);
+    workspace.setResizesEnabled(true);
+    return blocks;
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 function save(blocks) {
+  console.log(blocks);
   function generate(block) {
-    if (block == null) {
-      throw Error("XXX");
+    if (block === null) {
+      throw new Error("Missing block");
     }
 
     let astArgs = getBlockArguments(block).map(blockArg => {
@@ -116,11 +131,12 @@ function save(blocks) {
     if (nextBlock != null) {
       astArgs.push(generate(nextBlock));
     }
-    return meta.tree.node(block.type, astArgs);
+    return meta.tree.node(block.type, [], astArgs);
   }
 
-  blocks.map(b => console.log(generate(b).toString()));
-  return blocks.map(generate);
+  //blocks.map(b => console.log(generate(b).toString()));
+  console.log(generate(blocks[0]).toString());
+  return generate(blocks[0]);
 }
 
 function formatBlocks(blocks, padding = 2) {
