@@ -1,11 +1,10 @@
 import {meta} from '@brokenpylons/metalanguage';
 
 export class MetaEngine {
-    constructor(start, grammar, lexer) {
+    constructor(start, grammar) {
       this.start = start;
-      this.tables = meta.generate(grammar, lexer);
+      this.tables = meta.generate(grammar);
       this.grammar = grammar;
-      this.lexer = lexer;
     }
 
     print(tree) {

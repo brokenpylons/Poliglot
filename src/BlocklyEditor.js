@@ -42,7 +42,6 @@ class BlocklyEditor extends Component {
       try {
         sharedState.removeEventListener('ast', this.astChange);
         sharedState.updateAst(save(this.getProgramBlocks()), 'blocks');
-        console.log("HERE");
         sharedState.addEventListener('ast', this.astChange);
       } catch(e) {
         console.log(e);
@@ -52,13 +51,16 @@ class BlocklyEditor extends Component {
   }
 
   astChange = ast => {
+    try {
       Blockly.Events.disable();
       this.getProgramBlocks().forEach(x => x.dispose());
       const blocks = load(this.workspace, ast);
       if (blocks != null) {
         formatBlocks(blocks, 22);
       }
+    } finally {
       Blockly.Events.enable();
+    }
   }
 
   componentDidMount() {

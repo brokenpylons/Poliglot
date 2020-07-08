@@ -52,7 +52,6 @@ class TextEditor extends Component {
       sharedState.removeEventListener('ast', this.astChange);
       const ast = this.engine.parse(this.editor.getValue());
       sharedState.updateAst(ast, 'text');
-      sharedState.addEventListener('ast', this.astChange);
     } catch(e) {
       // TODO: add error reporting for new parser
       /*if (e instanceof ParseError) {
@@ -91,13 +90,19 @@ class TextEditor extends Component {
         throw e;
       }*/
     }
+    finally {
+      sharedState.addEventListener('ast', this.astChange);
+    }
   }
 
   astChange = (ast) => {
-    this.editor.off('change', this.editorChange);
-    console.log("PRINT")
-    this.editor.setValue(this.engine.print(ast));
-    this.editor.on('change', this.editorChange);
+    try {
+      this.editor.off('change', this.editorChange);
+      console.log("PRINT")
+      this.editor.setValue(this.engine.print(ast));
+    } finally {
+      this.editor.on('change', this.editorChange);
+    }
   }
 
   componentDidMount() {
