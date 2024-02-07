@@ -14,14 +14,11 @@ import Booklet from './Booklet';
 import {mode} from './lang/definitions.js';
 import {blocks as limpidBlocks, toolbox as limpidToolbox} from './newlang/limpid/blockly.js';
 import {blocks as grammarBlocks, toolbox as grammarToolbox} from './newlang/grammar/blockly.js';
-import {blocks as test1Blocks, toolbox as test1Toolbox} from './newlang/test1/blockly.js';
-import {blocks as test2Blocks, toolbox as test2Toolbox} from './newlang/test2/blockly.js';
 import Blockly from './blockly';
 import CodeMirror from './codeMirror';
 import db from './db';
 import config from './config';
 import {withTranslation} from 'react-i18next';
-import {meta} from '@brokenpylons/metalanguage';
 
 import './i18n';
 
@@ -69,11 +66,8 @@ class App extends Component {
   }
 
   render() {
-    console.log(meta.zero);
     Blockly.defineBlocksWithJsonArray(limpidBlocks); // TODO: Should this really be here? I doesn't work in componentDidMount (not called on refresh)
     Blockly.defineBlocksWithJsonArray(grammarBlocks);
-    Blockly.defineBlocksWithJsonArray(test1Blocks);
-    Blockly.defineBlocksWithJsonArray(test2Blocks);
     CodeMirror.defineSimpleMode('custom', mode);
 
     const {classes} = this.props;
@@ -91,8 +85,6 @@ class App extends Component {
               <Link className={classes.link} to="/playground1">{t('Block')}</Link>
               <Link className={classes.link} to="/playground2">{t('Text')}</Link>
               <Link className={classes.link} to="/grammar">{t('Grammar')}</Link>
-              <Link className={classes.link} to="/test1">{t('Test1')}</Link>
-              <Link className={classes.link} to="/test2">{t('Test2')}</Link>
               <Link className={classes.link} to="/exam">{t('Exercises')}</Link>
               {this.state.username}
             </nav>
@@ -104,8 +96,6 @@ class App extends Component {
             <Route path="/playground1" component={Playground1} />
             <Route path="/playground2" component={Playground2} />
             <Route path="/grammar" component={Grammar} />
-            <Route path="/test1" component={Test1} />
-            <Route path="/test2" component={Test2} />
             <Route path="/exam" component={Exam} />
           </div>
         </div>
@@ -398,32 +388,6 @@ class Grammar extends Component {
         <SplitView style={{flexDirection: 'column'}}>
             <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={grammarToolbox} />
             <TextEditor sharedState={sharedState} sharedStore={sharedStore} />
-        </SplitView>
-      )} />
-    );
-  }
-}
-
-class Test1 extends Component {
-  render() {
-    const {classes} = this.props;
-    return (
-      <SharedState name='test1' task='test1' render={(sharedState, sharedStore) => (
-        <SplitView style={{flexDirection: 'column'}}>
-            <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={test1Toolbox} />
-        </SplitView>
-      )} />
-    );
-  }
-}
-
-class Test2 extends Component {
-  render() {
-    const {classes} = this.props;
-    return (
-      <SharedState name='test2' task='test2' render={(sharedState, sharedStore) => (
-        <SplitView style={{flexDirection: 'column'}}>
-            <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={test2Toolbox} />
         </SplitView>
       )} />
     );
