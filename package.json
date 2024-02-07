@@ -4,8 +4,6 @@
   "private": true,
   "dependencies": {
     "@poliglot/shared": "git+https://bitbucket.org/poliglotenvironment/shared.git",
-    "@brokenpylons/metalanguage": "1.0.1",
-    "commonmark": "^0.28.1",
     "commonmark-react-renderer": "^4.3.4",
     "i18next": "^17.0.13",
     "i18next-browser-languagedetector": "^3.0.3",
@@ -20,8 +18,8 @@
     "sjcl": "^1.0.8"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -33,6 +31,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {}
+  ]
 }
