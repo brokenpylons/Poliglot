@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import injectSheet from 'react-jss';
-import refreshable from './refreshable';
+import refreshable from './refreshable.jsx';
 import {evaluate} from './evaluator';
 import {light as colors} from './lang/colors';
 import db from './db';
