@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import CodeMirror from './codeMirror';
+import CodeMirror from './codeMirror.js';
 import injectSheet from 'react-jss';
-import refreshable from './refreshable';
-import parser, {ParseError} from './lang/parser';
-import PrettyPrinter from './lang/prettyprinter';
-import {light as colors} from './lang/colors';
+import refreshable from './refreshable.jsx';
+import parser, {ParseError} from './lang/parser.js';
+import PrettyPrinter from './lang/prettyprinter.js';
+import {light as colors} from './lang/colors.js';
 
 const style = {
   '@global': {

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import injectSheet from 'react-jss';
-import {TabsContext} from './TabsContext'
+import {TabsContext} from './TabsContext.jsx'
 
 const style = {
   toolbar: { // TODO: duplicated in console

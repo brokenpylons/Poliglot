@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import injectSheet from 'react-jss';
 import commonmark from 'commonmark';
 import ReactRenderer from 'commonmark-react-renderer';
-import CodeBlock from './CodeBlock';
+import CodeBlock from './CodeBlock.jsx';
 
 const style = {
   container: {
