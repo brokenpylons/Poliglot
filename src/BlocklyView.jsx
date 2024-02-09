@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import injectSheet from 'react-jss';
-import Blockly from './blockly';
-import {load, formatBlocks} from './converter';
+import Blockly from './blockly.js';
+import {load, formatBlocks} from './converter.js';
 
 const style = {
   '@global': {

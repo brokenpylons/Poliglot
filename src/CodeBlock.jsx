@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import parser, {ParseError} from './lang/parser';
-import BlocklyView from './BlocklyView';
-import TextView from './TextView';
+import parser, {ParseError} from './lang/parser.js';
+import BlocklyView from './BlocklyView.jsx';
+import TextView from './TextView.jsx';
 import injectSheet from 'react-jss';
 
 const style = {

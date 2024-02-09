@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import CodeMirror from './codeMirror';
+import CodeMirror from './codeMirror.js';
 import injectSheet from 'react-jss';
-import PrettyPrinter from './lang/prettyprinter';
+import PrettyPrinter from './lang/prettyprinter.js';
 
 const style = { // TODO: Duplication
   '@global': {

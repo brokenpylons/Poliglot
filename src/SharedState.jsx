@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import db from './db';
+import db from './db.js';
 
 class State {
   constructor(task) {

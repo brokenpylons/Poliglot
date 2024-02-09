@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import injectSheet from 'react-jss';
 import {Link} from "react-router-dom";
-import config from './config';
+import config from './config.js';
 import {withTranslation} from 'react-i18next';
 
 const style = {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import injectSheet from 'react-jss';
-import {TabsContext} from './TabsContext'
-import db from './db';
+import {TabsContext} from './TabsContext.jsx'
+import db from './db.js';
 
 const style = {
   container: {

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import injectSheet from 'react-jss';
-import refreshable from './refreshable';
-import Blockly from './blockly';
-import {save, load, formatBlocks} from './converter';
+import refreshable from './refreshable.jsx';
+import Blockly from './blockly.js';
+import {save, load, formatBlocks} from './converter.js';
 
 const style = {
   '@global': {
