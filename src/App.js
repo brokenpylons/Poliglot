@@ -353,7 +353,6 @@ class Playground1 extends Component {
           </SplitView>
           <SplitView style={{flexDirection: 'column'}}>
             <BlocklyEditor sharedState={sharedState} sharedStore={sharedStore} toolbox={limpidToolbox} />
-            <TextEditor sharedState={sharedState} sharedStore={sharedStore} />
           </SplitView>
         </SplitView>
       )} />
