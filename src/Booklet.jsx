@@ -38,7 +38,7 @@ class Booklet extends Component {
       }
     });
 
-    const response = await fetch('https://booklet.poliglot.brokenpylons.com/index.md');
+    const response = await fetch('https://raw.githubusercontent.com/brokenpylons/Booklet/master/index.md');
     const data = await response.text();
 
     const parsed = reader.parse(data);
