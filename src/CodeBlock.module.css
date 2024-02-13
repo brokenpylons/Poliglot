@@ -1,0 +1,10 @@
+.container {
+  display: flex;
+  flex-flow: row;
+  padding: 10px 0;
+}
+
+.child {
+  flex: 1 1 0;
+  outline: 1px solid gainsboro;
+}
